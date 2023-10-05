@@ -16,13 +16,17 @@
 	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
 	
 	<source path="src" />
-	
+
 	<haxelib name="openfl" />
 	<haxelib name="starling" />
 	<haxelib name="away3d" />
 	
 	<assets path="data" include="*.awd" type="binary"/>
 	<assets path="data"/>
+
+  <section if="haxeserver">
+    <haxeflag name="--connect 6000"/>
+  </section>
 
   <config type="windows" output-directory="${platform}-${buildType}" />
 </project>
