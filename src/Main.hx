@@ -45,7 +45,7 @@ class Main extends Sprite {
 	
 	private function onContextCreated(event:Stage3DEvent) {
 		initAway3D();
-		initStarling();
+		//initStarling();
 		
 		//setup the render loop
 		stage.addEventListener(Event.ENTER_FRAME, _onEnterFrame);
@@ -75,11 +75,10 @@ class Main extends Sprite {
 	}
 	
 	private function _onEnterFrame(e:Event) {
-		//stage3DProxy.clear(0, 0, 0, 1, 1, 127);
 		stage3DProxy.clear();
 		
 		away3dview.render();
-		starlinglayer.nextFrame();
+		//starlinglayer.nextFrame();
 		
 		stage3DProxy.present();
 		
