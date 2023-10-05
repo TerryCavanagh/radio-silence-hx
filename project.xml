@@ -21,7 +21,8 @@
 	<haxelib name="starling" />
 	<haxelib name="away3d" />
 	
-	<assets path="data" />
+	<assets path="data" include="*.awd" type="binary"/>
+	<assets path="data"/>
 
   <config type="windows" output-directory="${platform}-${buildType}" />
 </project>
