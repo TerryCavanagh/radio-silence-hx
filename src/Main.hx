@@ -23,7 +23,7 @@ class Main extends Sprite {
 	private var starlinglayer:Starling;
 	
 	//scene objects
-	private var plane:Mesh;
+	private var gamestate:GameState;
 	
 	public function new(){
 		super();
@@ -47,6 +47,8 @@ class Main extends Sprite {
 		initAway3D();
 		//initStarling();
 		
+		gamestate = new GameState(away3dview);
+		
 		//setup the render loop
 		stage.addEventListener(Event.ENTER_FRAME, _onEnterFrame);
 	}
@@ -62,10 +64,6 @@ class Main extends Sprite {
 		away3dview.camera.y = 500;
 		away3dview.camera.lookAt(new Vector3D());
 		
-		//setup the scene
-		plane = new Mesh(new PlaneGeometry(700, 700), new TextureMaterial(Cast.bitmapTexture("data/floor_diffuse.jpg")));
-		away3dview.scene.addChild(plane);
-		
 		addChild(away3dview);
 		addChild(new AwayStats(away3dview));
 	}
@@ -77,11 +75,12 @@ class Main extends Sprite {
 	private function _onEnterFrame(e:Event) {
 		stage3DProxy.clear();
 		
+		gamestate.update();
 		away3dview.render();
 		//starlinglayer.nextFrame();
 		
 		stage3DProxy.present();
-		
-		plane.rotationY += 1;
 	}
+	
+	
 }
