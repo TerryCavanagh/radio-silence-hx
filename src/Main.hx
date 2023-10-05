@@ -44,28 +44,29 @@ class Main extends Sprite {
 	}
 	
 	private function onContextCreated(event:Stage3DEvent) {
-		initAway3D();
-		//initStarling();
-		
-		gamestate = new GameState(away3dview);
-		
-		//setup the render loop
-		stage.addEventListener(Event.ENTER_FRAME, _onEnterFrame);
-	}
-	
-	private function initAway3D(){
-		// Create the first Away3D view which holds the cube objects.
+		// Create the first Away3D view
 		away3dview = new View3D();
 		away3dview.stage3DProxy = stage3DProxy;
 		away3dview.shareContext = true;
 		
 		//setup the camera
-		away3dview.camera.z = -600;
-		away3dview.camera.y = 500;
+		away3dview.camera.z = -60;
+		away3dview.camera.y = 50;
 		away3dview.camera.lookAt(new Vector3D());
+		
+		MeshLibrary.load(["island1"], onloadcomplete);
 		
 		addChild(away3dview);
 		addChild(new AwayStats(away3dview));
+		
+		//initStarling();
+	}
+	
+	private function onloadcomplete(){
+		gamestate = new GameState(away3dview);
+		
+		//setup the render loop
+		stage.addEventListener(Event.ENTER_FRAME, _onEnterFrame);
 	}
 	
 	private function initStarling(){
@@ -81,6 +82,4 @@ class Main extends Sprite {
 		
 		stage3DProxy.present();
 	}
-	
-	
 }
