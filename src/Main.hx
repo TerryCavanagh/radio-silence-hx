@@ -54,7 +54,10 @@ class Main extends Sprite {
 		away3dview.camera.y = 50;
 		away3dview.camera.lookAt(new Vector3D());
 		
-		MeshLibrary.load(["island1"], onloadcomplete);
+		MeshLibrary.load(
+			["island1", "island2", "island3", "island4", "island5", 
+			"big1", "big2", "radio", "small1", "small2", "small3"], 
+			onloadcomplete);
 		
 		addChild(away3dview);
 		addChild(new AwayStats(away3dview));

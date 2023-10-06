@@ -26,17 +26,7 @@ class GameState{
 		initlight();
 		
 		radiosilence = new Level(view);
-		radiosilence.add("island1", new Vector3D(-50, 0, -50));
-		radiosilence.add("island1", new Vector3D(0, 0, -50));
-		radiosilence.add("island1", new Vector3D(50, 0, -50));
-		
-		radiosilence.add("island1", new Vector3D(-50, 0, 0));
-		radiosilence.add("island1", new Vector3D(0, 0, 0));
-		radiosilence.add("island1", new Vector3D(40, 0, 0));
-		
-		radiosilence.add("island1", new Vector3D(-50, 0, 50));
-		radiosilence.add("island1", new Vector3D(0, 0, 50));
-		radiosilence.add("island1", new Vector3D(50, 0, 50));
+		radiosilence.add("island4", new Vector3D(0, 0, 0));
 		
 		radiosilence.applylight(lightPicker);
 	}
