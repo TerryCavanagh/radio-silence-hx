@@ -1,15 +1,12 @@
 import away3d.containers.*;
 import away3d.entities.*;
-import away3d.materials.*;
 import away3d.primitives.*;
 import away3d.utils.*;
 import away3d.library.Asset3DLibrary;
-import away3d.lights.DirectionalLight;
 import away3d.loaders.parsers.AWDParser;
 import away3d.events.Asset3DEvent;
 import away3d.library.assets.IAsset;
 import away3d.library.assets.Asset3DType;
-import away3d.materials.lightpickers.StaticLightPicker;
 import openfl.Assets;
 import openfl.geom.Vector3D;
 import away3d.tools.commands.Explode;
@@ -45,9 +42,6 @@ class MeshLibrary{
 			case Asset3DType.MESH :
 				var mesh:Mesh = cast(asset, Mesh);
 				explode.apply(mesh.geometry, false);
-				
-				mesh.material = new ColorMaterial(0xCCCCCC);
-				
 				meshlist.set(event.assetPrevName, mesh);
 				checkifcomplete();
 			case Asset3DType.MATERIAL:

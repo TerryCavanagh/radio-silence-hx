@@ -25,10 +25,8 @@ class GameState{
 		
 		initlight();
 		
-		radiosilence = new Level(view);
+		radiosilence = new Level(view, 0x808080, lightPicker);
 		radiosilence.add("island4", new Vector3D(0, 0, 0));
-		
-		radiosilence.applylight(lightPicker);
 	}
 	
 	function initlight(){
