@@ -51,7 +51,7 @@ class Main extends Sprite {
 		
 		//setup the camera
 		away3dview.camera.z = -60;
-		away3dview.camera.y = 50;
+		away3dview.camera.y = 10;
 		away3dview.camera.lookAt(new Vector3D());
 		
 		MeshLibrary.load(
@@ -66,7 +66,7 @@ class Main extends Sprite {
 	}
 	
 	private function onloadcomplete(){
-		gamestate = new GameState(away3dview);
+		gamestate = new GameState(away3dview, stage);
 		
 		//setup the render loop
 		stage.addEventListener(Event.ENTER_FRAME, _onEnterFrame);

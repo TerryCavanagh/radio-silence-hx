@@ -17,13 +17,17 @@ class Level{
 		meshlist = [];
 	}
 	
-	public function add(meshname:String, pos:Vector3D):Mesh{
+	public function add(meshname:String, px:Float, py:Float, pz:Float, rx:Float, ry:Float, rz:Float, sx:Float, sy:Float, sz:Float):Mesh{
 		var newmesh:Mesh = MeshLibrary.getmesh(meshname).clone();
 		
 		newmesh.material = new ColorMaterial(ambientlight);
 		newmesh.material.lightPicker = lightpicker;
 		
-		newmesh.position = pos;
+		newmesh.position = new Vector3D(px, py, pz);
+		newmesh.rotationX = rx;
+		newmesh.rotationY = ry;
+		newmesh.rotationZ = rz;
+		
 		meshlist.push(newmesh);
 		view.scene.addChild(newmesh);
 		
