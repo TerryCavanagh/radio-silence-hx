@@ -17,16 +17,19 @@ class Level{
 		meshlist = [];
 	}
 	
-	public function add(meshname:String, px:Float, py:Float, pz:Float, rx:Float, ry:Float, rz:Float, sx:Float, sy:Float, sz:Float):Mesh{
+	public function add(meshname:String, pos:Vector3D, angle:Float = 0.0, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0):Mesh{
 		var newmesh:Mesh = MeshLibrary.getmesh(meshname).clone();
 		
 		newmesh.material = new ColorMaterial(ambientlight);
 		newmesh.material.lightPicker = lightpicker;
 		
-		newmesh.position = new Vector3D(px, py, pz);
-		newmesh.rotationX = rx;
-		newmesh.rotationY = ry;
-		newmesh.rotationZ = rz;
+		newmesh.position = pos;
+		newmesh.rotationX = 0;
+		newmesh.rotationY = (180 + angle) % 360; //Matches Unity coordinates
+		newmesh.rotationZ = 0;
+		newmesh.scaleX = sx;
+		newmesh.scaleY = sy;
+		newmesh.scaleZ = sz;
 		
 		meshlist.push(newmesh);
 		view.scene.addChild(newmesh);

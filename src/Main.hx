@@ -51,7 +51,7 @@ class Main extends Sprite {
 		
 		//setup the camera
 		away3dview.camera.z = -60;
-		away3dview.camera.y = 10;
+		away3dview.camera.y = 20;
 		away3dview.camera.lookAt(new Vector3D());
 		
 		MeshLibrary.load(
