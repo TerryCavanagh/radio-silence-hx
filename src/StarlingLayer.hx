@@ -19,7 +19,7 @@ class StarlingLayer extends Sprite {
 	function onadded(_) {
 		removeEventListener(starling.events.Event.ADDED_TO_STAGE, onadded);
 		testquad = new Quad(500, 500, 0xFFFF0000);
-		addChild(testquad);
+		//addChild(testquad);
 		testquad.alignPivot();
 		testquad.x = 1280/2;
 		testquad.y = 720/2;

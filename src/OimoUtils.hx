@@ -91,6 +91,8 @@ class OimoUtils {
 				var radius = geom.radius;
 				var halfHeight = geom.height / 2;
 				rBody = OimoUtils.addCapsule(OimoUtils.oimoWorld, tmpVec3_1, radius, halfHeight, type);
+			} else{
+				trace("ack, well, hardly surprising tbh");
 			}
 		} else {}
 

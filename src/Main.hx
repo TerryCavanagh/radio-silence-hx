@@ -21,7 +21,7 @@ class Main extends Sprite {
 	// scene objects
 	private var gamestate:GameState;
 
-	private var oimo_world:World;
+	private var oimoworld:World;
 
 	public function new() {
 		super();
@@ -29,10 +29,10 @@ class Main extends Sprite {
 		stage.scaleMode = StageScaleMode.NO_SCALE;
 		stage.align = StageAlign.TOP_LEFT;
 
-		oimo_world = new World(new Vec3(0, -9.80665, 0));
+		oimoworld = new World(new Vec3(0, -9.80665, 0));
 
 		// first step, must do before anything else !!!
-		OimoUtils.setWorld(oimo_world);
+		OimoUtils.setWorld(oimoworld);
 
 		initProxies();
 	}
@@ -53,7 +53,8 @@ class Main extends Sprite {
 		away3dview.shareContext = true;
 
 		// setup the camera
-		away3dview.camera.z = -60;
+		away3dview.camera.x = 30;
+		away3dview.camera.z = 30;
 		away3dview.camera.y = 20;
 		away3dview.camera.lookAt(new Vector3D());
 
@@ -68,7 +69,7 @@ class Main extends Sprite {
 	}
 
 	private function onloadcomplete() {
-		gamestate = new GameState(away3dview, stage);
+		gamestate = new GameState(away3dview, oimoworld, stage);
 		
 		stage.addEventListener(Event.RESIZE, stageResizeHandler, false, 0, true);
 		// setup the render loop
