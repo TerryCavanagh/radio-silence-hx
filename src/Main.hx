@@ -69,7 +69,8 @@ class Main extends Sprite {
 
 	private function onloadcomplete() {
 		gamestate = new GameState(away3dview, stage);
-
+		
+		stage.addEventListener(Event.RESIZE, stageResizeHandler, false, 0, true);
 		// setup the render loop
 		stage3DProxy.addEventListener(Event.ENTER_FRAME, _onEnterFrame);
 	}
@@ -81,10 +82,20 @@ class Main extends Sprite {
 
 	private function _onEnterFrame(e:Event) {
 		OimoUtils.updatePhysics();
-
+		
 		gamestate.update();
 		away3dview.render();
 		StarlingLayer.getInstance().update();
 		starlinglayer.nextFrame();
+	}
+	
+	private function stageResizeHandler(evt:Event) {
+		starlinglayer.stage.stageWidth = stage3DProxy.width = stage.stageWidth;
+		starlinglayer.stage.stageHeight = stage3DProxy.height = stage.stageHeight;
+		
+		away3dview.width = stage.stageWidth;
+		away3dview.height = stage.stageHeight;
+		
+		//TODO: Resize the Starling Layer too
 	}
 }
