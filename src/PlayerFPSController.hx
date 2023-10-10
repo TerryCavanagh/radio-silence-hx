@@ -21,8 +21,9 @@ import oimo.dynamics.World;
 class PlayerFPSController{
 	final TANK_CONTROLS:Bool = true;
 	
-	var linearSpeed:Float = 6;
-	var angularSpeed:Float = 2;
+	final linearSpeed:Float = 6;
+	final angularSpeed:Float = 2;
+	final capsuleheight:Float = 7;
 	
 	var direction:Vec3;
 	var forward:Vec3;
@@ -46,7 +47,7 @@ class PlayerFPSController{
 		playerbody.setOrientation(new Quat(0, 0, 0, 1));
 		
 		var shapeconfig:ShapeConfig = new ShapeConfig();
-		shapeconfig.geometry = new oimo.collision.geometry.SphereGeometry(3);
+		shapeconfig.geometry = new oimo.collision.geometry.CapsuleGeometry(3, capsuleheight / 2);
 		shapeconfig.friction = 1;
 		
 		var playershape = new Shape(shapeconfig);
@@ -59,7 +60,7 @@ class PlayerFPSController{
 		var capsulematerial:ColorMaterial = new ColorMaterial(0xFF0000);
 		capsulematerial.lightPicker = level.lightpicker;
 		
-		var newcapsule:Mesh = new Mesh(new away3d.primitives.SphereGeometry(3), capsulematerial);
+		var newcapsule:Mesh = new Mesh(new away3d.primitives.CapsuleGeometry(3, capsuleheight), capsulematerial);
 		newcapsule.position = pos;
 		
 		level.meshlist.push(newcapsule);

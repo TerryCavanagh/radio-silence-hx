@@ -46,7 +46,13 @@ class GameState{
 		radiosilence = new Level(view, oimoworld, 0xFFFFFF, lightPicker);
 		
 		radiosilence.addcube(new Vector3D(0, 0, 0), new Vector3D(100, 1, 100), 0xFFFF00);
-		radiosilence.addcube(new Vector3D(-35, 0, 0), new Vector3D(5, 50, 5), 0x00FF00);
+		var slope:PhysicsObject = radiosilence.addcube(new Vector3D( -35, 0, -20), new Vector3D(80, 1, 40), 0x0088FF);
+		slope.rigidbody.rotateXyz(new Vec3(0, 0, -Math.PI / 10));
+		slope.updatemeshposition();
+		var slope2:PhysicsObject = radiosilence.addcube(new Vector3D( -35, 0, 20), new Vector3D(80, 1, 40), 0x00FF88);
+		slope2.rigidbody.rotateXyz(new Vec3(0, 0, -Math.PI / 6));
+		slope2.updatemeshposition();
+		
 		radiosilence.addcube(new Vector3D(35, 0, 0), new Vector3D(5, 50, 5), 0x00FF00);
 		radiosilence.addcube(new Vector3D(0, 0, -35), new Vector3D(5, 50, 5), 0x00FF00);
 		radiosilence.addcube(new Vector3D(0, 0, 35), new Vector3D(5, 50, 5), 0x00FF00);

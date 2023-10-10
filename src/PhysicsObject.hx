@@ -18,6 +18,18 @@ class PhysicsObject{
 		zero = new Vec3(0, 0, 0);
 	}
 	
+	//OimoUtils updates the mesh position of Dynamic Rigid Bodies; if you change
+	//the position or rotation of a static one, you need to update it yourself
+	public function updatemeshposition(){
+		var tmpVec3_0:Vec3 = new Vec3();
+		tmpVec3_0 = rigidbody.getTransform().getRotation().toEulerXyz();
+		mesh.moveTo(rigidbody.getPosition().x, rigidbody.getPosition().y, rigidbody.getPosition().z);
+		//RadToDeg = 57.295
+		mesh.transform.appendRotation(tmpVec3_0.x * 57.295, mesh.rightVector, mesh.position);
+		mesh.transform.appendRotation(tmpVec3_0.y * 57.295, mesh.upVector, mesh.position);
+		mesh.transform.appendRotation(tmpVec3_0.z * 57.295, mesh.forwardVector, mesh.position);
+	}
+	
 	public function move(xforce:Float, yforce:Float, zforce:Float){
 		vector.x = xforce;
 		vector.y = yforce;
