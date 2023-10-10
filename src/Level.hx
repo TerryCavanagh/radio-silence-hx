@@ -1,12 +1,17 @@
 import away3d.primitives.CubeGeometry;
 import away3d.primitives.CapsuleGeometry;
 import away3d.primitives.CylinderGeometry;
+import oimo.collision.geometry.SphereGeometry;
+import oimo.common.Quat;
 import oimo.dynamics.rigidbody.RigidBody;
+import oimo.dynamics.rigidbody.RigidBodyConfig;
 import oimo.dynamics.rigidbody.RigidBodyType;
 import away3d.containers.View3D;
 import away3d.entities.Mesh;
 import away3d.materials.ColorMaterial;
 import away3d.materials.lightpickers.StaticLightPicker;
+import oimo.dynamics.rigidbody.Shape;
+import oimo.dynamics.rigidbody.ShapeConfig;
 import openfl.geom.Vector3D;
 import oimo.common.Vec3;
 import oimo.dynamics.World;
@@ -38,11 +43,7 @@ class Level {
 		newcube.position = pos;
 		
 		var rb:RigidBody = OimoUtils.addPhysics(newcube, anchored?RigidBodyType.STATIC:RigidBodyType.DYNAMIC, [pos.x, pos.y, pos.z]);
-		if (anchored){
-			rb.getShapeList().setFriction(0);
-		}else{
-			rb.getShapeList().setFriction(0);
-		}
+		rb.getShapeList().setFriction(1);
 		
 		meshlist.push(newcube);
 		view.scene.addChild(newcube);
@@ -59,11 +60,7 @@ class Level {
 		newcapsule.position = pos;
 		
 		var rb:RigidBody = OimoUtils.addPhysics(newcapsule, anchored?RigidBodyType.STATIC:RigidBodyType.DYNAMIC, [pos.x, pos.y, pos.z]);
-		if (anchored){
-			rb.getShapeList().setFriction(0);
-		}else{
-			rb.getShapeList().setFriction(0);
-		}
+		rb.getShapeList().setFriction(1);
 		
 		meshlist.push(newcapsule);
 		view.scene.addChild(newcapsule);

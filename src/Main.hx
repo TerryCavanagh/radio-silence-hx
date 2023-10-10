@@ -28,6 +28,8 @@ class Main extends Sprite {
 
 		stage.scaleMode = StageScaleMode.NO_SCALE;
 		stage.align = StageAlign.TOP_LEFT;
+		
+		Input.init(stage);
 
 		oimoworld = new World(new Vec3(0, -9.80665, 0));
 

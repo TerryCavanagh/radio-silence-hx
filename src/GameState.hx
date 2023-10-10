@@ -28,17 +28,15 @@ class GameState{
 	var radiosilence:Level;
 	var oimoworld:World;
 	
+	var player:PlayerFPSController;
+	
 	var stage:Stage;
 	var controller:FirstPersonController;
-	
-	var movingcube:PhysicsObject;
 	
 	public function new(_view:View3D, _oimoworld:World, _stage:Stage){
 		stage = _stage;
 		stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-		stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 		
 		view = _view;
 		oimoworld = _oimoworld;
@@ -53,8 +51,8 @@ class GameState{
 		radiosilence.addcube(new Vector3D(0, 0, -35), new Vector3D(5, 50, 5), 0x00FF00);
 		radiosilence.addcube(new Vector3D(0, 0, 35), new Vector3D(5, 50, 5), 0x00FF00);
 		
-		//movingcube = radiosilence.addcube(new Vector3D(0, 15, 0), new Vector3D(5, 5, 5), 0xFF00FF, false);
-		movingcube = radiosilence.addcapsule(new Vector3D(0, 10, 0), 3, 10, 0xFF00FF, false);
+		player = new PlayerFPSController(new Vector3D(0, 5, 0), radiosilence);
+		
 		/*
 		radiosilence.addmodel("island1", new Vector3D(0, 0, 0));
 		radiosilence.addmodel("island2", new Vector3D(100, 0, 10), 40);
@@ -109,6 +107,35 @@ class GameState{
 	}
 	
 	public function update(){
+		//Player Movement
+		player.update();
+		
+		//Camera Movement
+		if (Input.action_pressed(InputActions.MOVE_CAMERA_UP)){
+			walkAcceleration = walkIncrement;
+		}else if (Input.action_pressed(InputActions.MOVE_CAMERA_DOWN)){
+			walkAcceleration = -walkIncrement;
+		}else{
+			walkAcceleration = 0;
+		}
+		
+		if (Input.action_pressed(InputActions.MOVE_CAMERA_LEFT)){
+			strafeAcceleration = -strafeIncrement;
+		}else if (Input.action_pressed(InputActions.MOVE_CAMERA_RIGHT)){
+			strafeAcceleration = strafeIncrement;
+		}else{
+			strafeAcceleration = 0;
+		}
+		
+		if (Input.action_pressed(InputActions.JUMP)){
+			cameraheight += 1;
+			if (cameraheight >= 100) cameraheight = 100;
+		}else{
+			if (cameraheight > 20){
+				cameraheight -= 1;
+			}
+		}
+		
 		if (move) {
 			controller.panAngle = 0.3*(stage.mouseX - lastMouseX) + lastPanAngle;
 			controller.tiltAngle = 0.3*(stage.mouseY - lastMouseY) + lastTiltAngle;
@@ -144,57 +171,13 @@ class GameState{
 	
 	//movement variables
 	private var drag:Float = 0.5;
-	private var walkIncrement:Float = 2;
-	private var strafeIncrement:Float = 2;
+	private var walkIncrement:Float = 1;
+	private var strafeIncrement:Float = 1;
 	private var walkSpeed:Float = 0;
 	private var strafeSpeed:Float = 0;
 	private var walkAcceleration:Float = 0;
 	private var strafeAcceleration:Float = 0;
 	private var cameraheight:Float = 20;
-	
-	/**
-	 * Key down listener for camera control
-	 */
-	private function onKeyDown(event:KeyboardEvent):Void
-	{
-		switch (event.keyCode) {
-			case Keyboard.UP:
-				movingcube.move(0, 0, -10);
-			case Keyboard.DOWN:
-				movingcube.move(0, 0, 10);
-			case Keyboard.LEFT:
-				movingcube.move(-10, 0, 0);
-			case Keyboard.RIGHT:
-				movingcube.move(10, 0, 0);
-			case Keyboard.W:
-				walkAcceleration = walkIncrement;
-			case Keyboard.S:
-				walkAcceleration = -walkIncrement;
-			case Keyboard.A:
-				strafeAcceleration = -strafeIncrement;
-			case Keyboard.D:
-				strafeAcceleration = strafeIncrement;
-			case Keyboard.SPACE:
-				cameraheight = 140;
-			case Keyboard.SHIFT:
-				cameraheight = 20;
-		}
-	}
-	
-	/**
-	 * Key up listener for camera control
-	 */
-	private function onKeyUp(event:KeyboardEvent):Void
-	{
-		switch (event.keyCode) {
-			case Keyboard.UP, Keyboard.W, Keyboard.DOWN, Keyboard.S:
-				walkAcceleration = 0;
-				movingcube.stop();
-			case Keyboard.LEFT, Keyboard.A, Keyboard.RIGHT, Keyboard.D:
-				strafeAcceleration = 0;
-				movingcube.stop();
-		}
-	}
 	
 	/**
 	 * Mouse down listener for navigation
