@@ -105,21 +105,22 @@ class PlayerFPSController{
 	
 	//I found this function in glMatrix, couldn't figure out how to
 	//do it with the built in Oimo math class, might remove it later
-	var qx:Float; var qy:Float;	var qz:Float;	var qw:Float;	var w2:Float;
-	var ax:Float;	var ay:Float;	var az:Float;
-	var uvx:Float; var uvy:Float;	var uvz:Float;
-	var uuvx:Float; var uuvy:Float;	var uuvz:Float;
+	static var qx:Float; static var qy:Float;	static var qz:Float;
+	static var qw:Float; static var w2:Float;
+	static var ax:Float; static var ay:Float; static var az:Float;
+	static var uvx:Float; static var uvy:Float; static var uvz:Float;
+	static var uuvx:Float; static var uuvy:Float; static var uuvz:Float;
 	static function transformQuat(a:Vec3, q:Quat):Vec3{
 		qx = q.x;	qy = q.y;	qz = q.z; qw = q.w;
 		ax = a.x;	ay = a.y;	az = a.z;
 		
-		uvx = qy * az - qz * ay;
-		uvy = qz * ax - qx * az;
-		uvz = qx * ay - qy * ax;
+		uvx = (qy * az) - (qz * ay);
+		uvy = (qz * ax) - (qx * az);
+		uvz = (qx * ay) - (qy * ax);
 		
-		uuvx = qy * uvz - qz * uvy;
-		uuvy = qz * uvx - qx * uvz;
-		uuvz = qx * uvy - qy * uvx;
+		uuvx = (qy * uvz) - (qz * uvy);
+		uuvy = (qz * uvx) - (qx * uvz);
+		uuvz = (qx * uvy) - (qy * uvx);
 		
 		w2 = qw * 2;
 		uvx *= w2; uvy *= w2;	uvz *= w2;
