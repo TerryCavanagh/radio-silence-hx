@@ -3,7 +3,6 @@ import away3d.entities.*;
 import away3d.materials.*;
 import away3d.primitives.*;
 import away3d.utils.*;
-import away3d.controllers.FirstPersonController;
 import away3d.library.Asset3DLibrary;
 import away3d.lights.DirectionalLight;
 import away3d.loaders.parsers.AWDParser;
@@ -31,7 +30,6 @@ class GameState{
 	var player:PlayerFPSController;
 	
 	var stage:Stage;
-	var controller:FirstPersonController;
 	
 	public function new(_view:View3D, _oimoworld:World, _stage:Stage){
 		stage = _stage;
@@ -97,8 +95,6 @@ class GameState{
 		radiosilence.addmodel("small3", new Vector3D( 57.70886, 0, 46.51263), 20);
 		radiosilence.addmodel("small3", new Vector3D( 61.35777, 0, 67.3923), 320);
 		radiosilence.addmodel("small3", new Vector3D( -42.07666, 0, 114.5882), 20);*/
-		
-		controller = new FirstPersonController(view.camera, 180, 0, -80, 80);
 	}
 	
 	function initlight(){
@@ -115,53 +111,7 @@ class GameState{
 	public function update(){
 		//Player Movement
 		player.update();
-		
-		//Camera Movement
-		if (Input.action_pressed(InputActions.MOVE_CAMERA_UP)){
-			walkAcceleration = walkIncrement;
-		}else if (Input.action_pressed(InputActions.MOVE_CAMERA_DOWN)){
-			walkAcceleration = -walkIncrement;
-		}else{
-			walkAcceleration = 0;
-		}
-		
-		if (Input.action_pressed(InputActions.MOVE_CAMERA_LEFT)){
-			strafeAcceleration = -strafeIncrement;
-		}else if (Input.action_pressed(InputActions.MOVE_CAMERA_RIGHT)){
-			strafeAcceleration = strafeIncrement;
-		}else{
-			strafeAcceleration = 0;
-		}
-		
-		if (Input.action_pressed(InputActions.JUMP)){
-			cameraheight += 1;
-			if (cameraheight >= 100) cameraheight = 100;
-		}else{
-			if (cameraheight > 20){
-				cameraheight -= 1;
-			}
-		}
-		
-		if (move) {
-			controller.panAngle = 0.3*(stage.mouseX - lastMouseX) + lastPanAngle;
-			controller.tiltAngle = 0.3*(stage.mouseY - lastMouseY) + lastTiltAngle;
-		}
-		
-		view.camera.y = cameraheight;
-		
-		if (walkSpeed != 0 || walkAcceleration != 0) {
-			walkSpeed = (walkSpeed + walkAcceleration)*drag;
-			if (Math.abs(walkSpeed) < 0.01)
-				walkSpeed = 0;
-			controller.incrementWalk(walkSpeed);
-		}
-		
-		if (strafeSpeed != 0 || strafeAcceleration != 0) {
-			strafeSpeed = (strafeSpeed + strafeAcceleration)*drag;
-			if (Math.abs(strafeSpeed) < 0.01)
-				strafeSpeed = 0;
-			controller.incrementStrafe(strafeSpeed);
-		}
+		player.updatecamera(view.camera);
 	}
 	
 	public function cleanup(){
@@ -170,20 +120,8 @@ class GameState{
 	
 	//rotation variables
 	private var move:Bool = false;
-	private var lastPanAngle:Float;
-	private var lastTiltAngle:Float;
 	private var lastMouseX:Float;
 	private var lastMouseY:Float;
-	
-	//movement variables
-	private var drag:Float = 0.5;
-	private var walkIncrement:Float = 1;
-	private var strafeIncrement:Float = 1;
-	private var walkSpeed:Float = 0;
-	private var strafeSpeed:Float = 0;
-	private var walkAcceleration:Float = 0;
-	private var strafeAcceleration:Float = 0;
-	private var cameraheight:Float = 20;
 	
 	/**
 	 * Mouse down listener for navigation
@@ -191,8 +129,6 @@ class GameState{
 	private function onMouseDown(event:MouseEvent):Void
 	{
 		move = true;
-		lastPanAngle = controller.panAngle;
-		lastTiltAngle = controller.tiltAngle;
 		lastMouseX = stage.mouseX;
 		lastMouseY = stage.mouseY;
 		stage.addEventListener(Event.MOUSE_LEAVE, onStageMouseLeave);

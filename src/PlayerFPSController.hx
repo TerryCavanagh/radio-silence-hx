@@ -1,3 +1,4 @@
+import away3d.cameras.Camera3D;
 import away3d.primitives.CubeGeometry;
 import away3d.primitives.CapsuleGeometry;
 import away3d.primitives.CylinderGeometry;
@@ -23,7 +24,7 @@ class PlayerFPSController{
 	final TANK_CONTROLS:Bool = true;
 	
 	final linearSpeed:Float = 6;
-	final rotationspeed:Float = 5;
+	final rotationspeed:Float = 3;
 	final capsuleheight:Float = 7;
 	
 	final friction:Float = 0.5;
@@ -76,31 +77,40 @@ class PlayerFPSController{
   }
 	
 	public function update(){
+		physicsobject.rigidbody.setRotationFactor(zero);
+		
 		if (Input.action_pressed(InputActions.MOVE_UP)){
 			var vy:Float = physicsobject.rigidbody.getLinearVelocity().y;
 			var impulse:Vec3 = new Vec3(direction.x * linearSpeed, vy, direction.z * linearSpeed);
 			physicsobject.rigidbody.setLinearVelocity(impulse);
-			physicsobject.rigidbody.setRotationFactor(zero);
 		}else if (Input.action_pressed(InputActions.MOVE_DOWN)){
 			var vy:Float = physicsobject.rigidbody.getLinearVelocity().y;
 			var impulse:Vec3 = new Vec3(-direction.x * linearSpeed, vy, -direction.z * linearSpeed);
 			physicsobject.rigidbody.setLinearVelocity(impulse);
-			physicsobject.rigidbody.setRotationFactor(zero);
 		}
 		
 		if(TANK_CONTROLS){
 			if (Input.action_pressed(InputActions.MOVE_LEFT)){
 				var newrotation:Mat3 = physicsobject.rigidbody.getRotation().appendRotation((Math.PI / 180) * -rotationspeed, 0, 1, 0);
 				physicsobject.rigidbody.setRotation(newrotation);
-				physicsobject.rigidbody.setRotationFactor(new Vec3(0, 1, 0));
 			}else if (Input.action_pressed(InputActions.MOVE_RIGHT)){
 				var newrotation:Mat3 = physicsobject.rigidbody.getRotation().appendRotation((Math.PI / 180) * rotationspeed, 0, 1, 0);
 				physicsobject.rigidbody.setRotation(newrotation);
-				physicsobject.rigidbody.setRotationFactor(new Vec3(0, 1, 0));
 			}
 		}
 		
 		direction = transformQuat(forward, physicsobject.rigidbody.getOrientation());
+	}
+	
+	public function updatecamera(camera:Camera3D){
+		//Set the camera position to the top of the RigidBody
+		var pos:Vec3 = physicsobject.rigidbody.getPosition();
+		camera.x = pos.x;
+		camera.y = pos.y + (capsuleheight / 3);
+		camera.z = pos.z;
+		
+		var lookat:Vector3D = new Vector3D(pos.x + direction.x, pos.y + direction.y + (capsuleheight / 3), pos.z + direction.z);
+		camera.lookAt(lookat);
 	}
 	
 	//I found this function in glMatrix, couldn't figure out how to

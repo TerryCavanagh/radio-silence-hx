@@ -55,10 +55,7 @@ class Main extends Sprite {
 		away3dview.shareContext = true;
 
 		// setup the camera
-		away3dview.camera.x = 30;
-		away3dview.camera.z = 30;
-		away3dview.camera.y = 20;
-		away3dview.camera.lookAt(new Vector3D());
+		away3dview.camera.lens.near = 1;
 
 		MeshLibrary.load([
 			"island1", "island2", "island3", "island4", "island5", "big1", "big2", "radio", "small1", "small2", "small3"
