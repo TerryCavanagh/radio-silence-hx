@@ -13,7 +13,7 @@
 		stencil-buffer="true"
 		background="0x000000" />
 
-	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
+	<window orientation="landscape" vsync="true" antialiasing="0" if="cpp" />
 
 	<source path="src" />
 
