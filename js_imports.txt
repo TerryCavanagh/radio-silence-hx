@@ -66,6 +66,7 @@ import oimo.dynamics._World.AabbTestWrapper;
 import oimo.dynamics.callback.AabbTestCallback;
 import oimo.dynamics.callback.ContactCallback;
 import oimo.dynamics.callback.RayCastCallback;
+import oimo.dynamics.callback.RayCastClosest;
 import oimo.dynamics.common.DebugDraw;
 import oimo.dynamics.common.DebugDrawStyle;
 import oimo.dynamics.common.Performance;

@@ -131,9 +131,11 @@ class GameState{
 			}
 		}
 		
+		#if !html5
 		if (Input.action_pressed(InputActions.QUIT)){
 			Sys.exit(0);
 		}
+		#end
 	}
 	
 	public function cleanup(){
