@@ -105,6 +105,7 @@ class GameState{
 	
 	public function update(){
 		//Player Movement
+		if (Input.action_justpressed(InputActions.JUMP)) player.jump();
 		player.update();
 		player.updatecamera(view.camera);
 		

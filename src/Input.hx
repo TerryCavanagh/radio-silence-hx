@@ -26,6 +26,21 @@ class Input{
 		return false;
 	}
 	
+	//Hacky solution: just remove the key from the keylist when this
+	//returns true. Won't work if you check multiple times a frame.
+	public static function action_justpressed(action:InputActions):Bool{
+		var keycode:Array<Int> = getkeycodesfromaction(action);
+		
+		for(k in keycode){
+			if (keydownlist.indexOf(k) > -1){
+				keydownlist.remove(k);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	static function getkeycodesfromaction(action:InputActions):Array<Int>{
 		switch(action){
 			case MOVE_UP: return [Keyboard.W, Keyboard.UP];

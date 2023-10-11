@@ -32,7 +32,7 @@ class Main extends Sprite {
 		Input.init(stage);
 		Mouse.init(stage);
 
-		oimoworld = new World(new Vec3(0, -9.80665, 0));
+		oimoworld = new World(new Vec3(0, -0.980665, 0));
 		OimoUtils.setWorld(oimoworld);
 
 		initProxies();
@@ -54,7 +54,7 @@ class Main extends Sprite {
 		away3dview.shareContext = true;
 
 		// setup the camera
-		away3dview.camera.lens.near = 1;
+		away3dview.camera.lens.near = 0.1;
 		away3dview.camera.lens.far = 4000;
 
 		MeshLibrary.load([

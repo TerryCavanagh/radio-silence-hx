@@ -22,8 +22,11 @@ import oimo.dynamics.World;
 @:access(Level)
 class PlayerFPSController{
 	final linearSpeed:Float = 6;
-	final rotationspeed:Float = 3;
-	final capsuleheight:Float = 7;
+	final capsuleheight:Float = 2;
+	final capsuleradius:Float = 0.4;
+	
+	final jumpstrength:Float = 8;
+	var applyjump:Bool = false;
 	
 	final friction:Float = 0.5;
 	
@@ -54,6 +57,7 @@ class PlayerFPSController{
 		mousesensitivity = 0.3;
 		
 		mouselock = false;
+		applyjump = false;
 		
 		var rigidbodyconfig:RigidBodyConfig = new RigidBodyConfig();
 		rigidbodyconfig.type = RigidBodyType.DYNAMIC;
@@ -63,8 +67,9 @@ class PlayerFPSController{
 		playerbody.setOrientation(new Quat(0, 0, 0, 1));
 		
 		var shapeconfig:ShapeConfig = new ShapeConfig();
-		shapeconfig.geometry = new oimo.collision.geometry.CapsuleGeometry(3, capsuleheight / 2);
+		shapeconfig.geometry = new oimo.collision.geometry.CapsuleGeometry(capsuleradius, capsuleheight / 2);
 		shapeconfig.friction = friction;
+		shapeconfig.restitution = 0.0; //No bouncing!
 		
 		var playershape = new Shape(shapeconfig);
 		playerbody.addShape(playershape);
@@ -76,7 +81,7 @@ class PlayerFPSController{
 		var capsulematerial:ColorMaterial = new ColorMaterial(0xFF0000);
 		capsulematerial.lightPicker = level.lightpicker;
 		
-		var newcapsule:Mesh = new Mesh(new away3d.primitives.CapsuleGeometry(3, capsuleheight), capsulematerial);
+		var newcapsule:Mesh = new Mesh(new away3d.primitives.CapsuleGeometry(capsuleradius, capsuleheight), capsulematerial);
 		newcapsule.position = pos;
 		
 		level.meshlist.push(newcapsule);
@@ -127,9 +132,17 @@ class PlayerFPSController{
 			impulse.z += perpendicular.z;
 		}
 		
+		vy = impulse.y;
+		impulse.y = 0; 
 		impulse.normalize();
 		impulse.x = impulse.x * linearSpeed;
 		impulse.z = impulse.z * linearSpeed;
+		impulse.y = vy;
+		
+		if (applyjump){
+			impulse.y += jumpstrength;
+			applyjump = false;
+		}
 		
 		physicsobject.rigidbody.setLinearVelocity(impulse);
 	}
@@ -144,6 +157,10 @@ class PlayerFPSController{
 		var lookat:Vector3D = new Vector3D(pos.x + direction.x, pos.y + direction.y + (capsuleheight / 3), pos.z + direction.z);
 		camera.lookAt(lookat);
 		camera.rotate(Vector3D.X_AXIS, headtilt);
+	}
+	
+	public function jump(){
+		applyjump = true;
 	}
 	
 	public function lockmouse(){
