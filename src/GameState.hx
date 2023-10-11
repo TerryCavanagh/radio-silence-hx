@@ -3,8 +3,7 @@ import away3d.entities.*;
 import away3d.materials.*;
 import away3d.primitives.*;
 import away3d.utils.*;
-import away3d.library.Asset3DLibrary;
-import away3d.lights.DirectionalLight;
+import away3d.lights.*;
 import away3d.loaders.parsers.AWDParser;
 import away3d.events.Asset3DEvent;
 import away3d.library.assets.IAsset;
@@ -19,6 +18,7 @@ import oimo.dynamics.World;
 
 class GameState{
 	var view:View3D;
+	var ambient:DirectionalLight;
 	var light:DirectionalLight;
 	var lightPicker:StaticLightPicker;
 	var radiosilence:Level;
@@ -46,9 +46,12 @@ class GameState{
 		slope2.rigidbody.rotateXyz(new Vec3(0, 0, -Math.PI / 6));
 		slope2.updatemeshposition();
 		
+		
 		radiosilence.addcube(new Vector3D(35, 0, 0), new Vector3D(5, 50, 5), 0x00FF00);
-		radiosilence.addcube(new Vector3D(0, 0, -35), new Vector3D(5, 50, 5), 0x00FF00);
 		radiosilence.addcube(new Vector3D(0, 0, 35), new Vector3D(5, 50, 5), 0x00FF00);
+		
+		//radiosilence.addmodel("small2", new Vector3D(0, 0, -35));
+		radiosilence.addmodel("island3", new Vector3D(0, 0, -35));
 		
 		player = new PlayerFPSController(new Vector3D(0, 5, 0), radiosilence);
 		
@@ -93,13 +96,26 @@ class GameState{
 	}
 	
 	function initlight(){
+		/*
+		ambient = new DirectionalLight();
+		ambient.position = new Vector3D(0, 10, 0);
+		ambient.direction = new Vector3D(0, 1, 0);
+		ambient.color = 0x202020;
+		ambient.ambient = 0.4149853;
+		ambient.diffuse = 0.0;
+		ambient.specular = 0.0;
+		view.scene.addChild(ambient);*/
+		
 		light = new DirectionalLight();
 		light.position = new Vector3D( -46.10107, 41.36791, -44.0853);
 		light.direction = new Vector3D(34.01631, 5.832711, 357.2608);
 		light.color = 0xFFFFFF;
 		light.ambient = 0.4149853;
+		light.diffuse = 1.0;
+		light.specular = 0.0;
 		view.scene.addChild(light);
 		
+		//lightPicker = new StaticLightPicker([this.ambient, this.light]);
 		lightPicker = new StaticLightPicker([this.light]);
 	}
 	

@@ -92,7 +92,7 @@ class OimoUtils {
 				var halfHeight = geom.height / 2;
 				rBody = OimoUtils.addCapsule(OimoUtils.oimoWorld, tmpVec3_1, radius, halfHeight, type);
 			} else{
-				trace("ack, well, hardly surprising tbh");
+				trace("physics can't be added to complex meshes this way");
 			}
 		} else {}
 
