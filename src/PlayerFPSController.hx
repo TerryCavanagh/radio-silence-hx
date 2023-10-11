@@ -25,9 +25,13 @@ class PlayerFPSController{
 	final linearSpeed:Float = 6;
 	final capsuleheight:Float = 2;
 	final capsuleradius:Float = 0.4;
+	final maxcoyoteframes:Int = 6;
+	final maxjumpbuffer:Int = 3;
 	
 	final jumpstrength:Float = 8;
 	var applyjump:Bool = false;
+	var coyoteframes:Int = 0;
+	var jumpbuffer:Int = 0;
 	
 	final friction:Float = 0.5;
 	
@@ -66,6 +70,8 @@ class PlayerFPSController{
 		
 		mouselock = false;
 		applyjump = false;
+		coyoteframes = 0;
+		jumpbuffer = 0;
 		
 		var rigidbodyconfig:RigidBodyConfig = new RigidBodyConfig();
 		rigidbodyconfig.type = RigidBodyType.DYNAMIC;
@@ -186,11 +192,33 @@ class PlayerFPSController{
 		}else{
 			floordistance = 100000;
 		}
+		
+		if (onground()){
+			coyoteframes = maxcoyoteframes;
+		}else{
+			coyoteframes--;
+			if (coyoteframes < 0) coyoteframes = 0;
+		}
 	}
 	
-	public function jump(){
-		if(onground()){
-			applyjump = true;
+	var pressedjump:Bool;
+	public function checkjump(){
+		pressedjump = false;
+		if (Input.action_justpressed(InputActions.JUMP)) {
+			jumpbuffer = maxjumpbuffer;
+			pressedjump = true;
+		}else{
+			if (jumpbuffer > 0){
+				jumpbuffer--;
+				pressedjump = true;
+			}
+		}
+		
+		if(pressedjump){
+			if(onground() || coyoteframes > 0){
+				applyjump = true;
+				jumpbuffer = 0;
+			}
 		}
 	}
 	
