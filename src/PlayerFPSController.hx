@@ -22,13 +22,13 @@ import oimo.dynamics.World;
 @:access(OimoUtils)
 @:access(Level)
 class PlayerFPSController{
-	final linearSpeed:Float = 6;
+	final linearSpeed:Float = 2;
 	final capsuleheight:Float = 2;
 	final capsuleradius:Float = 0.4;
 	final maxcoyoteframes:Int = 6;
 	final maxjumpbuffer:Int = 3;
 	
-	final jumpstrength:Float = 8;
+	final jumpstrength:Float = 4;
 	var applyjump:Bool = false;
 	var coyoteframes:Int = 0;
 	var jumpbuffer:Int = 0;

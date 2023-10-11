@@ -38,29 +38,24 @@ class GameState{
 		
 		radiosilence = new Level(view, oimoworld, 0xFFFFFF, lightPicker);
 		
-		radiosilence.addcube(new Vector3D(0, 0, 0), new Vector3D(100, 1, 100), 0xFFFF00);
-		var slope:PhysicsObject = radiosilence.addcube(new Vector3D( -35, 0, -20), new Vector3D(80, 1, 40), 0x0088FF);
-		slope.rigidbody.rotateXyz(new Vec3(0, 0, -Math.PI / 10));
-		slope.updatemeshposition();
-		var slope2:PhysicsObject = radiosilence.addcube(new Vector3D( -35, 0, 20), new Vector3D(80, 1, 40), 0x00FF88);
-		slope2.rigidbody.rotateXyz(new Vec3(0, 0, -Math.PI / 6));
-		slope2.updatemeshposition();
+		radiosilence.addcube(new Vector3D(0, 0, 0), new Vector3D(500, 1, 500), 0x202020);
 		
-		
-		radiosilence.addcube(new Vector3D(35, 0, 0), new Vector3D(5, 50, 5), 0x00FF00);
-		radiosilence.addcube(new Vector3D(0, 0, 35), new Vector3D(5, 50, 5), 0x00FF00);
-		
-		//radiosilence.addmodel("small2", new Vector3D(0, 0, -35));
-		radiosilence.addmodel("island3", new Vector3D(0, 0, -35));
-		
-		player = new PlayerFPSController(new Vector3D(0, 5, 0), radiosilence);
-		
-		/*
+		//Manually split the big islands into convex hulls in blender
 		radiosilence.addmodel("island1", new Vector3D(0, 0, 0));
+		radiosilence.addmodel("island1_1", new Vector3D(0, 0, 0));
+		radiosilence.addmodel("island1_2", new Vector3D(0, 0, 0));
+		radiosilence.addmodel("island1_3", new Vector3D(0, 0, 0));
+		radiosilence.addmodel("island1_4", new Vector3D(0, 0, 0));
+		radiosilence.addmodel("island1_5", new Vector3D(0, 0, 0));
+		radiosilence.addmodel("island1_6", new Vector3D(0, 0, 0));
+		radiosilence.addmodel("island1_7", new Vector3D(0, 0, 0));
+		
+		/* todo: the other 4
 		radiosilence.addmodel("island2", new Vector3D(100, 0, 10), 40);
 		radiosilence.addmodel("island3", new Vector3D(20, 0, -85));
 		radiosilence.addmodel("island4", new Vector3D(60, 0, 80), 45);
 		radiosilence.addmodel("island5", new Vector3D( -130, 0, 10));
+		*/
 		
 		radiosilence.addmodel("big1", new Vector3D( -4.854439, 0, -56.49567), 75);
 		radiosilence.addmodel("big1", new Vector3D( -46.08296, 0, -97.01513), 20, 1.0, 0.75, 1.0);
@@ -92,31 +87,34 @@ class GameState{
 		radiosilence.addmodel("small3", new Vector3D( -64.87697, 0, -53.60156), 20);
 		radiosilence.addmodel("small3", new Vector3D( 57.70886, 0, 46.51263), 20);
 		radiosilence.addmodel("small3", new Vector3D( 61.35777, 0, 67.3923), 320);
-		radiosilence.addmodel("small3", new Vector3D( -42.07666, 0, 114.5882), 20);*/
+		radiosilence.addmodel("small3", new Vector3D( -42.07666, 0, 114.5882), 20);
+		
+		player = new PlayerFPSController(new Vector3D(0, 5, 0), radiosilence);
 	}
 	
 	function initlight(){
-		/*
 		ambient = new DirectionalLight();
-		ambient.position = new Vector3D(0, 10, 0);
-		ambient.direction = new Vector3D(0, 1, 0);
-		ambient.color = 0x202020;
-		ambient.ambient = 0.4149853;
-		ambient.diffuse = 0.0;
+		ambient.position = new Vector3D(0, 100 , 0);
+		ambient.direction = new Vector3D(100, 0, 0);
+		ambient.color = 0x880088;
+		ambient.ambient = 0.2;
+		ambient.diffuse = 1.0;
 		ambient.specular = 0.0;
-		view.scene.addChild(ambient);*/
+		view.scene.addChild(ambient);
 		
 		light = new DirectionalLight();
 		light.position = new Vector3D( -46.10107, 41.36791, -44.0853);
 		light.direction = new Vector3D(34.01631, 5.832711, 357.2608);
-		light.color = 0xFFFFFF;
-		light.ambient = 0.4149853;
+		light.color = 0x008800;
+		//light.ambient = 0.4149853;
+		light.ambient = 0.2;
 		light.diffuse = 1.0;
 		light.specular = 0.0;
 		view.scene.addChild(light);
 		
-		//lightPicker = new StaticLightPicker([this.ambient, this.light]);
-		lightPicker = new StaticLightPicker([this.light]);
+		lightPicker = new StaticLightPicker([this.ambient, this.light]);
+		//lightPicker = new StaticLightPicker([this.ambient]);
+		//lightPicker = new StaticLightPicker([this.light]);
 	}
 	
 	public function update(){
