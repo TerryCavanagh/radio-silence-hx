@@ -33,8 +33,6 @@ class GameState{
 	
 	public function new(_view:View3D, _oimoworld:World, _stage:Stage){
 		stage = _stage;
-		stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-		stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		
 		view = _view;
 		oimoworld = _oimoworld;
@@ -112,43 +110,13 @@ class GameState{
 		//Player Movement
 		player.update();
 		player.updatecamera(view.camera);
+		
+		if (Input.action_pressed(InputActions.QUIT)){
+			Sys.exit(0);
+		}
 	}
 	
 	public function cleanup(){
 		
-	}
-	
-	//rotation variables
-	private var move:Bool = false;
-	private var lastMouseX:Float;
-	private var lastMouseY:Float;
-	
-	/**
-	 * Mouse down listener for navigation
-	 */
-	private function onMouseDown(event:MouseEvent):Void
-	{
-		move = true;
-		lastMouseX = stage.mouseX;
-		lastMouseY = stage.mouseY;
-		stage.addEventListener(Event.MOUSE_LEAVE, onStageMouseLeave);
-	}
-	
-	/**
-	 * Mouse up listener for navigation
-	 */
-	private function onMouseUp(event:MouseEvent):Void
-	{
-		move = false;
-		stage.removeEventListener(Event.MOUSE_LEAVE, onStageMouseLeave);
-	}
-	
-	/**
-	 * Mouse stage leave listener for navigation
-	 */
-	private function onStageMouseLeave(event:Event):Void
-	{
-		move = false;
-		stage.removeEventListener(Event.MOUSE_LEAVE, onStageMouseLeave);
 	}
 }

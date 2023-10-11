@@ -15,26 +15,25 @@ class Input{
 	}
 	
 	public static function action_pressed(action:InputActions):Bool{
-		var keycode:Int = getkeycodefromaction(action);
+		var keycode:Array<Int> = getkeycodesfromaction(action);
 		
-		if (keydownlist.indexOf(keycode) > -1){
-			return true;
+		for(k in keycode){
+			if (keydownlist.indexOf(k) > -1){
+				return true;
+			}
 		}
 		
 		return false;
 	}
 	
-	static function getkeycodefromaction(action:InputActions):Int{
+	static function getkeycodesfromaction(action:InputActions):Array<Int>{
 		switch(action){
-			case MOVE_CAMERA_UP: return Keyboard.W;
-			case MOVE_CAMERA_LEFT: return Keyboard.A;
-			case MOVE_CAMERA_DOWN: return Keyboard.S;
-			case MOVE_CAMERA_RIGHT: return Keyboard.D;
-			case MOVE_UP: return Keyboard.UP;
-			case MOVE_LEFT: return Keyboard.LEFT;
-			case MOVE_DOWN: return Keyboard.DOWN;
-			case MOVE_RIGHT: return Keyboard.RIGHT;
-			case JUMP: return Keyboard.SPACE;
+			case MOVE_UP: return [Keyboard.W, Keyboard.UP];
+			case MOVE_LEFT: return [Keyboard.A, Keyboard.LEFT];
+			case MOVE_DOWN: return [Keyboard.S, Keyboard.DOWN];
+			case MOVE_RIGHT: return [Keyboard.D, Keyboard.RIGHT];
+			case JUMP: return [Keyboard.SPACE, Keyboard.Z, Keyboard.X];
+			case QUIT: return [Keyboard.ESCAPE];
 		}
 	}
 	

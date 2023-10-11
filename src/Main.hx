@@ -30,10 +30,10 @@ class Main extends Sprite {
 		stage.align = StageAlign.TOP_LEFT;
 		
 		Input.init(stage);
+		Mouse.init(stage);
+		Mouse.hide(); Mouse.capturecursor = true;
 
 		oimoworld = new World(new Vec3(0, -9.80665, 0));
-
-		// first step, must do before anything else !!!
 		OimoUtils.setWorld(oimoworld);
 
 		initProxies();
@@ -56,6 +56,7 @@ class Main extends Sprite {
 
 		// setup the camera
 		away3dview.camera.lens.near = 1;
+		away3dview.camera.lens.far = 4000;
 
 		MeshLibrary.load([
 			"island1", "island2", "island3", "island4", "island5", "big1", "big2", "radio", "small1", "small2", "small3"
@@ -82,6 +83,7 @@ class Main extends Sprite {
 
 	private function _onEnterFrame(e:Event) {
 		OimoUtils.updatePhysics();
+		Mouse.update(Std.int(flash.Lib.current.mouseX), Std.int(flash.Lib.current.mouseY), Std.int(stage.stageWidth), Std.int(stage.stageHeight), false);
 		
 		gamestate.update();
 		away3dview.render();

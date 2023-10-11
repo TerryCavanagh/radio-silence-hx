@@ -21,7 +21,7 @@ import oimo.dynamics.World;
 @:access(OimoUtils)
 @:access(Level)
 class PlayerFPSController{
-	final TANK_CONTROLS:Bool = true;
+	final TANK_CONTROLS:Bool = false;
 	
 	final linearSpeed:Float = 6;
 	final rotationspeed:Float = 3;
@@ -32,6 +32,11 @@ class PlayerFPSController{
 	var direction:Vec3;
 	var forward:Vec3;
 	var zero:Vec3;
+	var perpendicular:Vec3;
+	var impulse:Vec3;
+	
+	var headtilt:Float;
+	var mousesensitivity:Float;
 	
 	var level:Level;
 	var physicsobject:PhysicsObject;
@@ -42,6 +47,11 @@ class PlayerFPSController{
 		forward = new Vec3(0, 0, -1);
 		direction = new Vec3(0, 0, -1);
 		zero = new Vec3(0, 0, 0);
+		perpendicular = new Vec3(0, 0, 0);
+		impulse = new Vec3(0, 0, 0);
+		
+		headtilt = 0;
+		mousesensitivity = 0.3;
 		
 		var rigidbodyconfig:RigidBodyConfig = new RigidBodyConfig();
 		rigidbodyconfig.type = RigidBodyType.DYNAMIC;
@@ -79,17 +89,23 @@ class PlayerFPSController{
 	public function update(){
 		physicsobject.rigidbody.setRotationFactor(zero);
 		
-		if (Input.action_pressed(InputActions.MOVE_UP)){
-			var vy:Float = physicsobject.rigidbody.getLinearVelocity().y;
-			var impulse:Vec3 = new Vec3(direction.x * linearSpeed, vy, direction.z * linearSpeed);
-			physicsobject.rigidbody.setLinearVelocity(impulse);
-		}else if (Input.action_pressed(InputActions.MOVE_DOWN)){
-			var vy:Float = physicsobject.rigidbody.getLinearVelocity().y;
-			var impulse:Vec3 = new Vec3(-direction.x * linearSpeed, vy, -direction.z * linearSpeed);
-			physicsobject.rigidbody.setLinearVelocity(impulse);
-		}
-		
-		if(TANK_CONTROLS){
+		if (TANK_CONTROLS){
+			if (Input.action_pressed(InputActions.MOVE_UP)){
+				var vy:Float = physicsobject.rigidbody.getLinearVelocity().y;
+				impulse.x = direction.x * linearSpeed;
+				impulse.y = vy;
+				impulse.z = direction.z * linearSpeed;
+				
+				physicsobject.rigidbody.setLinearVelocity(impulse);
+			}else if (Input.action_pressed(InputActions.MOVE_DOWN)){
+				var vy:Float = physicsobject.rigidbody.getLinearVelocity().y;
+				impulse.x = -direction.x * linearSpeed;
+				impulse.y = vy;
+				impulse.z = -direction.z * linearSpeed;
+				
+				physicsobject.rigidbody.setLinearVelocity(impulse);
+			}
+			
 			if (Input.action_pressed(InputActions.MOVE_LEFT)){
 				var newrotation:Mat3 = physicsobject.rigidbody.getRotation().appendRotation((Math.PI / 180) * -rotationspeed, 0, 1, 0);
 				physicsobject.rigidbody.setRotation(newrotation);
@@ -97,9 +113,48 @@ class PlayerFPSController{
 				var newrotation:Mat3 = physicsobject.rigidbody.getRotation().appendRotation((Math.PI / 180) * rotationspeed, 0, 1, 0);
 				physicsobject.rigidbody.setRotation(newrotation);
 			}
+			
+			direction = transformQuat(forward, physicsobject.rigidbody.getOrientation());
+		}else{
+			headtilt += Mouse.deltay * mousesensitivity;
+			
+			if(Mouse.deltax != 0){
+				var newrotation:Mat3 = physicsobject.rigidbody.getRotation().appendRotation((Math.PI / 180) * (Mouse.deltax * mousesensitivity), 0, 1, 0);
+				physicsobject.rigidbody.setRotation(newrotation);
+			}
+			
+			direction = transformQuat(forward, physicsobject.rigidbody.getOrientation());
+			perpendicular.x = direction.z;
+			perpendicular.z = -direction.x;
+			
+			var vy:Float = physicsobject.rigidbody.getLinearVelocity().y;
+			impulse.x = 0; impulse.y = vy; impulse.z = 0;
+			if (Input.action_pressed(InputActions.MOVE_UP)){
+				impulse.x += direction.x;
+				impulse.z += direction.z;
+			}
+			
+			if (Input.action_pressed(InputActions.MOVE_DOWN)){
+				impulse.x += -direction.x;
+				impulse.z += -direction.z;
+			}
+			
+			if (Input.action_pressed(InputActions.MOVE_LEFT)){
+				impulse.x += -perpendicular.x;
+				impulse.z += -perpendicular.z;
+			}
+			
+			if (Input.action_pressed(InputActions.MOVE_RIGHT)){
+				impulse.x += perpendicular.x;
+				impulse.z += perpendicular.z;
+			}
+			
+			impulse.normalize();
+			impulse.x = impulse.x * linearSpeed;
+			impulse.z = impulse.z * linearSpeed;
+			
+			physicsobject.rigidbody.setLinearVelocity(impulse);
 		}
-		
-		direction = transformQuat(forward, physicsobject.rigidbody.getOrientation());
 	}
 	
 	public function updatecamera(camera:Camera3D){
@@ -111,6 +166,10 @@ class PlayerFPSController{
 		
 		var lookat:Vector3D = new Vector3D(pos.x + direction.x, pos.y + direction.y + (capsuleheight / 3), pos.z + direction.z);
 		camera.lookAt(lookat);
+		
+		if(!TANK_CONTROLS){
+			camera.rotate(Vector3D.X_AXIS, headtilt);
+		}
 	}
 	
 	//I found this function in glMatrix, couldn't figure out how to
