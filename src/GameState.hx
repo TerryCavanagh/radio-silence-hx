@@ -17,9 +17,6 @@ import openfl.geom.Vector3D;
 import oimo.common.Vec3;
 import oimo.dynamics.World;
 
-import openfl.events.*;
-import openfl.ui.*;
-
 class GameState{
 	var view:View3D;
 	var light:DirectionalLight;
@@ -110,6 +107,14 @@ class GameState{
 		//Player Movement
 		player.update();
 		player.updatecamera(view.camera);
+		
+		if (Mouse.leftclick() || Mouse.rightclick() || Mouse.middleclick()){
+			if (player.mouselock){
+				player.unlockmouse();
+			}else{
+				player.lockmouse();
+			}
+		}
 		
 		if (Input.action_pressed(InputActions.QUIT)){
 			Sys.exit(0);

@@ -31,7 +31,6 @@ class Main extends Sprite {
 		
 		Input.init(stage);
 		Mouse.init(stage);
-		Mouse.hide(); Mouse.capturecursor = true;
 
 		oimoworld = new World(new Vec3(0, -9.80665, 0));
 		OimoUtils.setWorld(oimoworld);

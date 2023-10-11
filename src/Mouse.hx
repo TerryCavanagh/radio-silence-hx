@@ -151,6 +151,8 @@ class Mouse{
 		
 		flashstage = _flashstage;
 		
+		flashstage.addEventListener(MouseEvent.MOUSE_DOWN, handleLeftMouseDown);
+    flashstage.addEventListener(MouseEvent.MOUSE_UP, handleLeftMouseUp);
     flashstage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, handleRightMouseDown);
     flashstage.addEventListener(MouseEvent.RIGHT_MOUSE_UP, handleRightMouseUp);
 		flashstage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, handleMiddleMouseDown);
@@ -190,6 +192,9 @@ class Mouse{
 	public static function hide() {
 	  openfl.ui.Mouse.hide();	
 	}
+	
+	private static function handleLeftMouseDown(event:MouseEvent) { if (_current > 0) { _current = 1; } else { _current = 2; } }
+	private static function handleLeftMouseUp(event:MouseEvent) { if (_current > 0) { _current = -1; } else { _current = 0; }	}
 	
 	private static function handleRightMouseDown(event:MouseEvent) { if (_rightcurrent > 0) { _rightcurrent = 1; } else { _rightcurrent = 2; } }
 	private static function handleRightMouseUp(event:MouseEvent) { if (_rightcurrent > 0) { _rightcurrent = -1; } else { _rightcurrent = 0; }	}

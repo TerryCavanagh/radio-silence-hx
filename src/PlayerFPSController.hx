@@ -27,6 +27,8 @@ class PlayerFPSController{
 	
 	final friction:Float = 0.5;
 	
+	public var mouselock:Bool;
+	
 	var direction:Vec3;
 	var forward:Vec3;
 	var zero:Vec3;
@@ -50,6 +52,8 @@ class PlayerFPSController{
 		
 		headtilt = 0;
 		mousesensitivity = 0.3;
+		
+		mouselock = false;
 		
 		var rigidbodyconfig:RigidBodyConfig = new RigidBodyConfig();
 		rigidbodyconfig.type = RigidBodyType.DYNAMIC;
@@ -86,9 +90,13 @@ class PlayerFPSController{
 	
 	public function update(){
 		physicsobject.rigidbody.setRotationFactor(zero);
-		headtilt += Mouse.deltay * mousesensitivity;
-			
-		if(Mouse.deltax != 0){
+		if(mouselock){
+			headtilt += Mouse.deltay * mousesensitivity;
+			if (headtilt < -70) headtilt = -70;
+			if (headtilt > 70) headtilt = 70;
+		}
+		
+		if(Mouse.deltax != 0 && mouselock){
 			var newrotation:Mat3 = physicsobject.rigidbody.getRotation().appendRotation((Math.PI / 180) * (Mouse.deltax * mousesensitivity), 0, 1, 0);
 			physicsobject.rigidbody.setRotation(newrotation);
 		}
@@ -138,8 +146,17 @@ class PlayerFPSController{
 		camera.rotate(Vector3D.X_AXIS, headtilt);
 	}
 	
-	//I found this function in glMatrix, couldn't figure out how to
-	//do it with the built in Oimo math class, might remove it later
+	public function lockmouse(){
+		Mouse.hide(); Mouse.capturecursor = true;
+		mouselock = true;
+	}
+	
+	public function unlockmouse(){
+		Mouse.show(); Mouse.capturecursor = false;
+		mouselock = false;
+	}
+	
+	//Found this function in glMatrix
 	static var qx:Float; static var qy:Float;	static var qz:Float;
 	static var qw:Float; static var w2:Float;
 	static var ax:Float; static var ay:Float; static var az:Float;
