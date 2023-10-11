@@ -5,6 +5,7 @@ import away3d.primitives.CylinderGeometry;
 import oimo.collision.geometry.SphereGeometry;
 import oimo.common.Mat3;
 import oimo.common.Quat;
+import oimo.dynamics.callback.RayCastClosest;
 import oimo.dynamics.rigidbody.RigidBody;
 import oimo.dynamics.rigidbody.RigidBodyConfig;
 import oimo.dynamics.rigidbody.RigidBodyType;
@@ -44,6 +45,11 @@ class PlayerFPSController{
 	var level:Level;
 	var physicsobject:PhysicsObject;
 	
+	var raycast:RayCastClosest;
+	var raycastbegin:Vec3;
+	var raycastend:Vec3;
+	var floordistance:Float;
+	
   public function new(pos:Vector3D, _level:Level){
 		level = _level;
 		
@@ -52,6 +58,8 @@ class PlayerFPSController{
 		zero = new Vec3(0, 0, 0);
 		perpendicular = new Vec3(0, 0, 0);
 		impulse = new Vec3(0, 0, 0);
+		raycastbegin = new Vec3(0, 0, 0);
+		raycastend = new Vec3(0, 0, 0);
 		
 		headtilt = 0;
 		mousesensitivity = 0.3;
@@ -90,10 +98,14 @@ class PlayerFPSController{
 		OimoUtils.oimoDynamicBodies.push(playerbody);
 		OimoUtils.awayDynamicBodies.push(newcapsule);
 		
+		raycast = new RayCastClosest();
+		floordistance = 0;
+		
 		physicsobject = new PhysicsObject(newcapsule, playerbody);
   }
 	
 	public function update(){
+		checkraycast();
 		physicsobject.rigidbody.setRotationFactor(zero);
 		if(mouselock){
 			headtilt += Mouse.deltay * mousesensitivity;
@@ -159,8 +171,32 @@ class PlayerFPSController{
 		camera.rotate(Vector3D.X_AXIS, headtilt);
 	}
 	
+	function checkraycast(){
+		raycast.clear();
+		raycastbegin.copyFrom(physicsobject.rigidbody.getPosition());
+		raycastbegin.y -= (capsuleheight / 2);
+		
+		raycastend.copyFrom(raycastbegin);
+		raycastend.y -= 3;
+		
+		level.oimoworld.rayCast(raycastbegin, raycastend, raycast);
+		
+		if (raycast.hit){
+			floordistance = raycastbegin.sub(raycast.position).y;
+		}else{
+			floordistance = 100000;
+		}
+	}
+	
 	public function jump(){
-		applyjump = true;
+		if(onground()){
+			applyjump = true;
+		}
+	}
+	
+	public function onground():Bool{
+		if (floordistance <= 3) return true;
+		return false;
 	}
 	
 	public function lockmouse(){
