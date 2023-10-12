@@ -19,7 +19,6 @@ import openfl.ui.Keyboard;
 
 class GameState{
 	var view:View3D;
-	var ambient:DirectionalLight;
 	var light:DirectionalLight;
 	var lightPicker:StaticLightPicker;
 	var radiosilence:Level;
@@ -39,7 +38,7 @@ class GameState{
 		
 		radiosilence = new Level(view, oimoworld, 0xFFFFFF, lightPicker);
 		
-		radiosilence.addcube(new Vector3D(0, 0, 0), new Vector3D(500, 1, 500), 0x202020);
+		radiosilence.addcube(new Vector3D(0, 0, 0), new Vector3D(500, 1, 500), 0x000000);
 		
 		//Manually split the big islands into convex hulls in blender
 		radiosilence.addmodel("island1", new Vector3D(0, 0, 0));
@@ -137,34 +136,22 @@ class GameState{
 		radiosilence.addradio(new Vector3D(-119.4835, 3.650509, -119.8437), 90, 50, 0);
 		radiosilence.addradio(new Vector3D(10.9876076407625, 3.91578086042665, -5.24179292182197), 20, 320, 0);
 		
-		player = new PlayerFPSController(new Vector3D(0, 5, 0), radiosilence);
+		player = new PlayerFPSController(new Vector3D(-1.061736, 5, 0), radiosilence);
 	}
 	
 	var radio:Mesh;
 	
 	function initlight(){
-		ambient = new DirectionalLight();
-		ambient.position = new Vector3D(0, 100 , 0);
-		ambient.direction = new Vector3D(100, 0, 0);
-		ambient.color = 0x880088;
-		ambient.ambient = 0.2;
-		ambient.diffuse = 1.0;
-		ambient.specular = 0.0;
-		view.scene.addChild(ambient);
-		
 		light = new DirectionalLight();
 		light.position = new Vector3D( -46.10107, 41.36791, -44.0853);
 		light.direction = new Vector3D(34.01631, 5.832711, 357.2608);
-		light.color = 0x008800;
-		//light.ambient = 0.4149853;
-		light.ambient = 0.2;
+		light.color = 0xFFFFFF;
+		light.ambient = 0.4149853;
 		light.diffuse = 1.0;
 		light.specular = 0.0;
 		view.scene.addChild(light);
 		
-		lightPicker = new StaticLightPicker([this.ambient, this.light]);
-		//lightPicker = new StaticLightPicker([this.ambient]);
-		//lightPicker = new StaticLightPicker([this.light]);
+		lightPicker = new StaticLightPicker([this.light]);
 	}
 	
 	public function update(){

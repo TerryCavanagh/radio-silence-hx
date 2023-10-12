@@ -1,3 +1,4 @@
+import away3d.materials.methods.FogMethod;
 import away3d.primitives.CubeGeometry;
 import away3d.primitives.CapsuleGeometry;
 import away3d.primitives.CylinderGeometry;
@@ -22,6 +23,7 @@ class Level {
 	var meshlist:Array<Mesh>;
 	var ambientlight:Int;
 	var lightpicker:StaticLightPicker;
+	var fogmethod:FogMethod;
 	var oimoworld:World;
 	var center:Vec3;
 
@@ -30,6 +32,7 @@ class Level {
 		oimoworld = _oimoworld;
 		ambientlight = _ambientlight;
 		lightpicker = _lightpicker;
+		fogmethod = new FogMethod(0, 125, 0x000000);
 		meshlist = [];
 		
 		center = new Vec3(0, 0, 0);
@@ -39,6 +42,7 @@ class Level {
 	public function addcube(pos:Vector3D, size:Vector3D, color:Int, anchored:Bool = true):PhysicsObject{
 		var cubematerial:ColorMaterial = new ColorMaterial(color);
 		cubematerial.lightPicker = lightpicker;
+		cubematerial.addMethod(fogmethod);
 		
 		var newcube:Mesh = new Mesh(new CubeGeometry(size.x, size.y, size.z), cubematerial);
 		newcube.position = pos;
@@ -54,10 +58,13 @@ class Level {
 
 	public function addmodel(meshname:String, pos:Vector3D, angle:Float = 0.0, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0):Mesh {
 		var newmesh:Mesh = MeshLibrary.getmesh(meshname).clone();
+		
+		var newmaterial:ColorMaterial = new ColorMaterial(ambientlight);
+		newmaterial.lightPicker = lightpicker;
+		newmaterial.addMethod(fogmethod);
 
-		newmesh.material = new ColorMaterial(ambientlight);
-		newmesh.material.lightPicker = lightpicker;
-
+		newmesh.material = newmaterial;
+		
 		newmesh.position = pos;
 		newmesh.rotationX = 0;
 		newmesh.rotationY = (180 + angle) % 360; // Matches Unity coordinates
@@ -95,8 +102,11 @@ class Level {
 	public function addradio(pos:Vector3D, rx:Float, ry:Float, rz:Float):Mesh {
 		var radio:Mesh = MeshLibrary.getmesh("radio").clone();
 		
-		radio.material = new ColorMaterial(ambientlight);
-		radio.material.lightPicker = lightpicker;
+		var newmaterial:ColorMaterial = new ColorMaterial(ambientlight);
+		newmaterial.lightPicker = lightpicker;
+		newmaterial.addMethod(fogmethod);
+
+		radio.material = newmaterial;
 		
 		radio.position = pos;
 		radio.rotationX = rx;
