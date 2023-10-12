@@ -50,8 +50,15 @@ class GameState{
 		radiosilence.addmodel("island1_6", new Vector3D(0, 0, 0));
 		radiosilence.addmodel("island1_7", new Vector3D(0, 0, 0));
 		
-		/* todo: the other 4
 		radiosilence.addmodel("island2", new Vector3D(100, 0, 10), 40);
+		radiosilence.addmodel("island2_1", new Vector3D(100, 0, 10), 40);
+		radiosilence.addmodel("island2_2", new Vector3D(100, 0, 10), 40);
+		radiosilence.addmodel("island2_3", new Vector3D(100, 0, 10), 40);
+		radiosilence.addmodel("island2_4", new Vector3D(100, 0, 10), 40);
+		radiosilence.addmodel("island2_5", new Vector3D(100, 0, 10), 40);
+		radiosilence.addmodel("island2_6", new Vector3D(100, 0, 10), 40);
+		
+		/* todo: the other 3
 		radiosilence.addmodel("island3", new Vector3D(20, 0, -85));
 		radiosilence.addmodel("island4", new Vector3D(60, 0, 80), 45);
 		radiosilence.addmodel("island5", new Vector3D( -130, 0, 10));

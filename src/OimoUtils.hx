@@ -71,22 +71,22 @@ class OimoUtils {
 		var rBody:RigidBody = null;
 
 		if (colliderType == "") {
-			if (Std.is(mesh.geometry, AwayCubeGeom)) {
+			if (Std.isOfType(mesh.geometry, AwayCubeGeom)) {
 				var geom:AwayCubeGeom = cast mesh.geometry;
 				tmpVec3_0.x = geom.width / 2;
 				tmpVec3_0.y = geom.height / 2;
 				tmpVec3_0.z = geom.depth / 2;
 				rBody = OimoUtils.addBox(OimoUtils.oimoWorld, tmpVec3_1, tmpVec3_0, type);
-			} else if (Std.is(mesh.geometry, AwaySphereGeom)) {
+			} else if (Std.isOfType(mesh.geometry, AwaySphereGeom)) {
 				var geom:AwaySphereGeom = cast mesh.geometry;
 				var radius = geom.radius;
 				rBody = OimoUtils.addSphere(OimoUtils.oimoWorld, tmpVec3_1, radius, type);
-			} else if (Std.is(mesh.geometry, AwayCylinderGeom)) {
+			} else if (Std.isOfType(mesh.geometry, AwayCylinderGeom)) {
 				var geom:AwayCylinderGeom = cast mesh.geometry;
 				var radius = geom.topRadius;
 				var halfHeight = geom.height / 2;
 				rBody = OimoUtils.addCylinder(OimoUtils.oimoWorld, tmpVec3_1, radius, halfHeight, type);
-			} else if (Std.is(mesh.geometry, AwayCapsuleGeom)) {
+			} else if (Std.isOfType(mesh.geometry, AwayCapsuleGeom)) {
 				var geom:AwayCapsuleGeom = cast mesh.geometry;
 				var radius = geom.radius;
 				var halfHeight = geom.height / 2;
