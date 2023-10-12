@@ -70,10 +70,24 @@ class GameState{
 		radiosilence.addmodel("island3_9", new Vector3D(20, 0, -85));
 		radiosilence.addmodel("island3_10", new Vector3D(20, 0, -85));
 		
-		/* todo: the other 2
+		/* todo: island4
 		radiosilence.addmodel("island4", new Vector3D(60, 0, 80), 45);
-		radiosilence.addmodel("island5", new Vector3D( -130, 0, 10));
 		*/
+		
+		radiosilence.addmodel("island5", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_1", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_2", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_3", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_4", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_5", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_6", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_7", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_8", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_9", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_10", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_11", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_12", new Vector3D( -130, 0, 10));
+		radiosilence.addmodel("island5_13", new Vector3D( -130, 0, 10));
 		
 		radiosilence.addmodel("big1", new Vector3D( -4.854439, 0, -56.49567), 75);
 		radiosilence.addmodel("big1", new Vector3D( -46.08296, 0, -97.01513), 20, 1.0, 0.75, 1.0);
