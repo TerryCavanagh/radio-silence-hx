@@ -145,8 +145,8 @@ class GameState{
 		light = new DirectionalLight();
 		light.position = new Vector3D( -46.10107, 41.36791, -44.0853);
 		light.direction = new Vector3D(34.01631, 5.832711, 357.2608);
-		light.color = 0xFFFFFF;
-		light.ambient = 0.4149853;
+		light.color = 0xDDDDDD;
+		light.ambient = 1.0;//0.4149853
 		light.diffuse = 1.0;
 		light.specular = 0.0;
 		view.scene.addChild(light);

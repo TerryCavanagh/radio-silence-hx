@@ -1,4 +1,4 @@
-import away3d.materials.methods.FogMethod;
+import away3d.materials.methods.*;
 import away3d.primitives.CubeGeometry;
 import away3d.primitives.CapsuleGeometry;
 import away3d.primitives.CylinderGeometry;
@@ -14,6 +14,7 @@ import away3d.materials.ColorMaterial;
 import away3d.materials.lightpickers.StaticLightPicker;
 import oimo.dynamics.rigidbody.Shape;
 import oimo.dynamics.rigidbody.ShapeConfig;
+import openfl.geom.ColorTransform;
 import openfl.geom.Vector3D;
 import oimo.common.Vec3;
 import oimo.dynamics.World;
@@ -23,6 +24,7 @@ class Level {
 	var meshlist:Array<Mesh>;
 	var ambientlight:Int;
 	var lightpicker:StaticLightPicker;
+	var levelmaterial:ColorMaterial;
 	var fogmethod:FogMethod;
 	var oimoworld:World;
 	var center:Vec3;
@@ -32,8 +34,14 @@ class Level {
 		oimoworld = _oimoworld;
 		ambientlight = _ambientlight;
 		lightpicker = _lightpicker;
-		fogmethod = new FogMethod(0, 125, 0x000000);
 		meshlist = [];
+		
+		fogmethod = new FogMethod(0, 125, 0x000000);
+		levelmaterial = new ColorMaterial(ambientlight);
+		levelmaterial.ambientColor = 0x404040;
+		levelmaterial.ambient = 1.0;
+		levelmaterial.lightPicker = lightpicker;
+		levelmaterial.addMethod(fogmethod);
 		
 		center = new Vec3(0, 0, 0);
 	}
@@ -58,12 +66,7 @@ class Level {
 
 	public function addmodel(meshname:String, pos:Vector3D, angle:Float = 0.0, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0):Mesh {
 		var newmesh:Mesh = MeshLibrary.getmesh(meshname).clone();
-		
-		var newmaterial:ColorMaterial = new ColorMaterial(ambientlight);
-		newmaterial.lightPicker = lightpicker;
-		newmaterial.addMethod(fogmethod);
-
-		newmesh.material = newmaterial;
+		newmesh.material = levelmaterial;
 		
 		newmesh.position = pos;
 		newmesh.rotationX = 0;
@@ -101,12 +104,7 @@ class Level {
 	
 	public function addradio(pos:Vector3D, rx:Float, ry:Float, rz:Float):Mesh {
 		var radio:Mesh = MeshLibrary.getmesh("radio").clone();
-		
-		var newmaterial:ColorMaterial = new ColorMaterial(ambientlight);
-		newmaterial.lightPicker = lightpicker;
-		newmaterial.addMethod(fogmethod);
-
-		radio.material = newmaterial;
+		radio.material = levelmaterial;
 		
 		radio.position = pos;
 		radio.rotationX = rx;
