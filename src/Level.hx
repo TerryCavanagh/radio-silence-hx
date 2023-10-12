@@ -91,6 +91,23 @@ class Level {
 
 		return newmesh;
 	}
+	
+	public function addradio(pos:Vector3D, rx:Float, ry:Float, rz:Float):Mesh {
+		var radio:Mesh = MeshLibrary.getmesh("radio").clone();
+		
+		radio.material = new ColorMaterial(ambientlight);
+		radio.material.lightPicker = lightpicker;
+		
+		radio.position = pos;
+		radio.rotationX = rx;
+		radio.rotationY = ry;
+		radio.rotationZ = rz;
+		
+		meshlist.push(radio);
+		view.scene.addChild(radio);
+		
+		return radio;
+	}
 
 	public function cleanup() {}
 }

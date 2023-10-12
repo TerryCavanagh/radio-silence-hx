@@ -59,4 +59,22 @@ class Input{
 	static function onKeyUp(event:KeyboardEvent):Void {
 		if (keydownlist.indexOf(event.keyCode) > -1) keydownlist.remove(event.keyCode);
 	}
+	
+	public static function key_justpressed(k:Int):Bool{
+		if (keydownlist.indexOf(k) > -1){
+			keydownlist.remove(k);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	public static function key_pressed(k:Int):Bool{
+		if (keydownlist.indexOf(k) > -1){
+			return true;
+		}
+		
+		return false;
+	}
 }
