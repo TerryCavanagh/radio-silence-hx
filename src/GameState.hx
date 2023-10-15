@@ -143,8 +143,9 @@ class GameState{
 	
 	function initlight(){
 		light = new DirectionalLight();
-		light.position = new Vector3D( -46.10107, 41.36791, -44.0853);
-		light.direction = new Vector3D(34.01631, 5.832711, 357.2608);
+		light.position = new Vector3D(0, 100, 0);
+		light.rotateTo(14.0688712061326, 5.43897662668833, 0);
+
 		light.color = 0xDDDDDD;
 		light.ambient = 1.0;//0.4149853
 		light.diffuse = 1.0;
@@ -155,6 +156,31 @@ class GameState{
 	}
 	
 	public function update(){
+		
+		if (Input.key_justpressed(Keyboard.NUMBER_1)){
+			light.rotationX = ((light.rotationX - 5) + 360) % 360;
+			trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
+		}
+		if (Input.key_justpressed(Keyboard.NUMBER_2)){
+			light.rotationX = ((light.rotationX + 5) + 360) % 360;
+			trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
+		}
+		if (Input.key_justpressed(Keyboard.NUMBER_3)){
+			light.rotationY = ((light.rotationY - 5) + 360) % 360;
+			trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
+		}
+		if (Input.key_justpressed(Keyboard.NUMBER_4)){
+			light.rotationY = ((light.rotationY + 5) + 360) % 360;
+			trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
+		}
+		if (Input.key_justpressed(Keyboard.NUMBER_5)){
+			light.rotationZ = ((light.rotationZ - 5) + 360) % 360;
+			trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
+		}
+		if (Input.key_justpressed(Keyboard.NUMBER_6)){
+			light.rotationZ = ((light.rotationZ + 5) + 360) % 360;
+			trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
+		}
 		/*
 		if (Input.key_pressed(Keyboard.SHIFT)){
 			if (Input.key_justpressed(Keyboard.NUMBER_1)){
