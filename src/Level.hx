@@ -36,9 +36,9 @@ class Level {
 		lightpicker = _lightpicker;
 		meshlist = [];
 		
-		fogmethod = new FogMethod(0, 125, 0x000000);
+		fogmethod = new FogMethod(0, 150, 0x000000);
 		levelmaterial = new ColorMaterial(ambientlight);
-		levelmaterial.ambientColor = 0x404040;
+		levelmaterial.ambientColor = 0x606060;
 		levelmaterial.ambient = 1.0;
 		levelmaterial.lightPicker = lightpicker;
 		levelmaterial.addMethod(fogmethod);

@@ -144,10 +144,10 @@ class GameState{
 	function initlight(){
 		light = new DirectionalLight();
 		light.position = new Vector3D(0, 100, 0);
-		light.rotateTo(14.0688712061326, 5.43897662668833, 0);
+		light.rotateTo(39.0688712061326, 15.4389766266883, 355);
 
-		light.color = 0xDDDDDD;
-		light.ambient = 1.0;//0.4149853
+		light.color = 0xBBBBBB;
+		light.ambient = 0.4149853;
 		light.diffuse = 1.0;
 		light.specular = 0.0;
 		view.scene.addChild(light);
