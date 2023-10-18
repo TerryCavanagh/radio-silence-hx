@@ -112,7 +112,19 @@ class Level {
 		radio.rotationZ = rz;
 		
 		meshlist.push(radio);
+		
+		var radioscreen:Mesh = MeshLibrary.getmesh("radioscreen").clone();
+		radioscreen.material = new ColorMaterial(0x000000);
+		
+		radioscreen.position = pos;
+		radioscreen.rotationX = rx;
+		radioscreen.rotationY = ry;
+		radioscreen.rotationZ = rz;
+		
+		meshlist.push(radioscreen);
+		
 		view.scene.addChild(radio);
+		view.scene.addChild(radioscreen);
 		
 		return radio;
 	}
