@@ -22,13 +22,13 @@ import oimo.dynamics.World;
 @:access(OimoUtils)
 @:access(Level)
 class PlayerFPSController{
-	final linearSpeed:Float = 2;
+	final linearSpeed:Float = 1;
 	final capsuleheight:Float = 2;
 	final capsuleradius:Float = 0.4;
 	final maxcoyoteframes:Int = 6;
 	final maxjumpbuffer:Int = 3;
 	
-	final jumpstrength:Float = 4;
+	final jumpstrength:Float = 0.8;
 	var applyjump:Bool = false;
 	var coyoteframes:Int = 0;
 	var jumpbuffer:Int = 0;
@@ -169,7 +169,7 @@ class PlayerFPSController{
 		//Set the camera position to the top of the RigidBody
 		var pos:Vec3 = physicsobject.rigidbody.getPosition();
 		camera.x = pos.x;
-		camera.y = pos.y + (capsuleheight / 3);
+		camera.y = pos.y + (capsuleheight / 2);
 		camera.z = pos.z;
 		
 		var lookat:Vector3D = new Vector3D(pos.x + direction.x, pos.y + direction.y + (capsuleheight / 3), pos.z + direction.z);
