@@ -41,62 +41,11 @@ class GameState{
 		radiosilence.addcube(new Vector3D(0, 0, 0), new Vector3D(500, 1, 500), 0x000000);
 		
 		//Manually split the big islands into convex hulls in blender
-		radiosilence.addmodel("island1", new Vector3D(0, 0, 0));
-		radiosilence.addmodel("island1_1", new Vector3D(0, 0, 0));
-		radiosilence.addmodel("island1_2", new Vector3D(0, 0, 0));
-		radiosilence.addmodel("island1_3", new Vector3D(0, 0, 0));
-		radiosilence.addmodel("island1_4", new Vector3D(0, 0, 0));
-		radiosilence.addmodel("island1_5", new Vector3D(0, 0, 0));
-		radiosilence.addmodel("island1_6", new Vector3D(0, 0, 0));
-		radiosilence.addmodel("island1_7", new Vector3D(0, 0, 0));
-		radiosilence.addmodel("island1_8", new Vector3D(0, 0, 0));
-		radiosilence.addmodel("island1_9", new Vector3D(0, 0, 0));
-		radiosilence.addmodel("island1_10", new Vector3D(0, 0, 0));
-		
-		radiosilence.addmodel("island2", new Vector3D(100, 0, 10), 40);
-		radiosilence.addmodel("island2_1", new Vector3D(100, 0, 10), 40);
-		radiosilence.addmodel("island2_2", new Vector3D(100, 0, 10), 40);
-		radiosilence.addmodel("island2_3", new Vector3D(100, 0, 10), 40);
-		radiosilence.addmodel("island2_4", new Vector3D(100, 0, 10), 40);
-		radiosilence.addmodel("island2_5", new Vector3D(100, 0, 10), 40);
-		radiosilence.addmodel("island2_6", new Vector3D(100, 0, 10), 40);
-		
-		radiosilence.addmodel("island3", new Vector3D(20, 0, -85));
-		radiosilence.addmodel("island3_1", new Vector3D(20, 0, -85));
-		radiosilence.addmodel("island3_2", new Vector3D(20, 0, -85));
-		radiosilence.addmodel("island3_3", new Vector3D(20, 0, -85));
-		radiosilence.addmodel("island3_4", new Vector3D(20, 0, -85));
-		radiosilence.addmodel("island3_5", new Vector3D(20, 0, -85));
-		radiosilence.addmodel("island3_6", new Vector3D(20, 0, -85));
-		radiosilence.addmodel("island3_7", new Vector3D(20, 0, -85));
-		radiosilence.addmodel("island3_8", new Vector3D(20, 0, -85));
-		radiosilence.addmodel("island3_9", new Vector3D(20, 0, -85));
-		radiosilence.addmodel("island3_10", new Vector3D(20, 0, -85));
-		
-		radiosilence.addmodel("island4", new Vector3D(60, 0, 80), 45);
-		radiosilence.addmodel("island4_1", new Vector3D(60, 0, 80), 45);
-		radiosilence.addmodel("island4_2", new Vector3D(60, 0, 80), 45);
-		radiosilence.addmodel("island4_3", new Vector3D(60, 0, 80), 45);
-		radiosilence.addmodel("island4_4", new Vector3D(60, 0, 80), 45);
-		radiosilence.addmodel("island4_5", new Vector3D(60, 0, 80), 45);
-		radiosilence.addmodel("island4_6", new Vector3D(60, 0, 80), 45);
-		radiosilence.addmodel("island4_7", new Vector3D(60, 0, 80), 45);
-		radiosilence.addmodel("island4_8", new Vector3D(60, 0, 80), 45);
-		
-		radiosilence.addmodel("island5", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_1", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_2", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_3", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_4", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_5", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_6", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_7", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_8", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_9", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_10", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_11", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_12", new Vector3D( -130, 0, 10));
-		radiosilence.addmodel("island5_13", new Vector3D( -130, 0, 10));
+		radiosilence.addmodelgroup("island1", 13, new Vector3D(0, 0, 0));
+		radiosilence.addmodelgroup("island2", 6, new Vector3D(100, 0, 10), 40);
+		radiosilence.addmodelgroup("island3", 10, new Vector3D(20, 0, -85));
+		radiosilence.addmodelgroup("island4", 8, new Vector3D(60, 0, 80), 45);
+		radiosilence.addmodelgroup("island5", 13, new Vector3D( -130, 0, 10));
 		
 		radiosilence.addmodel("big1", new Vector3D( -4.854439, 0, -56.49567), 75);
 		radiosilence.addmodel("big1", new Vector3D( -46.08296, 0, -97.01513), 20, 1.0, 0.75, 1.0);
