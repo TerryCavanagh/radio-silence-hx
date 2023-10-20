@@ -185,7 +185,7 @@ class PlayerFPSController{
 		impulse.y = vy;
 		
 		if (applyjump){
-			impulse.y += jumpstrength;
+			impulse.y = jumpstrength;
 			applyjump = false;
 		}
 		
