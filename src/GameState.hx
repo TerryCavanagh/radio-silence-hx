@@ -42,7 +42,7 @@ class GameState{
 		
 		//Manually split the big islands into convex hulls in blender
 		radiosilence.addmodelgroup("island1", 13, new Vector3D(0, 0, 0));
-		radiosilence.addmodelgroup("island2", 6, new Vector3D(100, 0, 10), 40);
+		radiosilence.addmodelgroup("island2", 16, new Vector3D(100, 0, 10), 40);
 		radiosilence.addmodelgroup("island3", 10, new Vector3D(20, 0, -85));
 		radiosilence.addmodelgroup("island4", 8, new Vector3D(60, 0, 80), 45);
 		radiosilence.addmodelgroup("island5", 13, new Vector3D( -130, 0, 10));
