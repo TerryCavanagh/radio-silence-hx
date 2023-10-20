@@ -28,7 +28,7 @@ class PlayerFPSController{
 	final maxcoyoteframes:Int = 6;
 	final maxjumpbuffer:Int = 3;
 	
-	final jumpstrength:Float = 3;
+	final jumpstrength:Float = 2.4;
 	var applyjump:Bool = false;
 	var coyoteframes:Int = 0;
 	var jumpbuffer:Int = 0;
@@ -241,7 +241,7 @@ class PlayerFPSController{
 				floordistance[i] = 100000;
 			}
 			
-			if (onground()){
+			if (onground_canjump()){
 				coyoteframes = maxcoyoteframes;
 			}else{
 				coyoteframes--;
@@ -264,7 +264,7 @@ class PlayerFPSController{
 		}
 		
 		if (pressedjump){
-			if(onground() || coyoteframes > 0){
+			if(onground_canjump() || coyoteframes > 0){
 				applyjump = true;
 				jumpbuffer = 0;
 			}
@@ -280,6 +280,17 @@ class PlayerFPSController{
 			}
 		}
 		if (numtouches >= 4) return true;
+		return false;
+	}
+	
+	public function onground_canjump():Bool{
+		numtouches = 0;
+		for (i in 0 ... 8){
+			if (floordistance[i] < raycastlength){
+				numtouches++;
+			}
+		}
+		if (numtouches >= 1) return true;
 		return false;
 	}
 	
