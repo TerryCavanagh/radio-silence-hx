@@ -28,12 +28,10 @@ class PlayerFPSController{
 	final maxcoyoteframes:Int = 6;
 	final maxjumpbuffer:Int = 3;
 	
-	final jumpstrength:Float = 0.8;
+	final jumpstrength:Float = 3;
 	var applyjump:Bool = false;
 	var coyoteframes:Int = 0;
 	var jumpbuffer:Int = 0;
-	
-	final friction:Float = 0.5;
 	
 	public var mouselock:Bool;
 	
@@ -49,10 +47,14 @@ class PlayerFPSController{
 	var level:Level;
 	var physicsobject:PhysicsObject;
 	
+	var raycastvisual:Array<Mesh> = [];
 	var raycast:RayCastClosest;
 	var raycastbegin:Vec3;
 	var raycastend:Vec3;
-	var floordistance:Float;
+	var floordistance:Array<Float>;
+	final raycastlength:Float = 0.5;
+	var red:ColorMaterial;
+	var green:ColorMaterial;
 	
   public function new(pos:Vector3D, _level:Level){
 		level = _level;
@@ -73,6 +75,9 @@ class PlayerFPSController{
 		coyoteframes = 0;
 		jumpbuffer = 0;
 		
+		red = new ColorMaterial(0xFF0000);
+		green = new ColorMaterial(0x00FF00);
+		
 		var rigidbodyconfig:RigidBodyConfig = new RigidBodyConfig();
 		rigidbodyconfig.type = RigidBodyType.DYNAMIC;
 		rigidbodyconfig.position = new Vec3(pos.x, pos.y, pos.z);
@@ -82,7 +87,7 @@ class PlayerFPSController{
 		
 		var shapeconfig:ShapeConfig = new ShapeConfig();
 		shapeconfig.geometry = new oimo.collision.geometry.CapsuleGeometry(capsuleradius, capsuleheight / 2);
-		shapeconfig.friction = friction;
+		shapeconfig.friction = 0.5;
 		shapeconfig.restitution = 0.0; //No bouncing!
 		
 		var playershape = new Shape(shapeconfig);
@@ -101,11 +106,24 @@ class PlayerFPSController{
 		level.meshlist.push(newcapsule);
 		level.view.scene.addChild(newcapsule);
 		
+		raycastvisual = [];
+		for (i in 0 ... 8){
+			var rc:Mesh = new Mesh(new away3d.primitives.CubeGeometry(0.05, raycastlength + (capsuleheight / 2), 0.05), new ColorMaterial(0xFFFF00));
+			rc.position = new Vector3D(
+				pos.x + (capsuleradius * Math.cos((Math.PI * 2 * i) / 8)),
+				pos.y,
+				pos.z + (capsuleradius * Math.sin((Math.PI * 2 * i) / 8)));
+			level.meshlist.push(rc);
+			level.view.scene.addChild(rc);
+			
+			raycastvisual.push(rc);
+		}
+		
 		OimoUtils.oimoDynamicBodies.push(playerbody);
 		OimoUtils.awayDynamicBodies.push(newcapsule);
 		
 		raycast = new RayCastClosest();
-		floordistance = 0;
+		floordistance = [0, 0, 0, 0, 0, 0, 0, 0];
 		
 		physicsobject = new PhysicsObject(newcapsule, playerbody);
   }
@@ -113,6 +131,15 @@ class PlayerFPSController{
 	public function update(){
 		checkraycast();
 		physicsobject.rigidbody.setRotationFactor(zero);
+		
+		if (onground()){
+			//if (physicsobject.rigidbody.getShapeList().getFriction() == 0) trace("Friction ON");
+			physicsobject.rigidbody.getShapeList().setFriction(1.0);
+		}else{
+			//if (physicsobject.rigidbody.getShapeList().getFriction() == 1.0) trace("Friction OFF");
+			physicsobject.rigidbody.getShapeList().setFriction(0.0);
+		}
+		
 		if(mouselock){
 			headtilt += Mouse.deltay * mousesensitivity;
 			if (headtilt < -70) headtilt = -70;
@@ -163,6 +190,21 @@ class PlayerFPSController{
 		}
 		
 		physicsobject.rigidbody.setLinearVelocity(impulse);
+		
+		//Update raycast visuals
+		for (i in 0 ... 8){
+			raycastvisual[i].moveTo(
+				physicsobject.mesh.position.x  + (capsuleradius * Math.cos((Math.PI * 2 * i) / 8)),
+				physicsobject.mesh.position.y - ((capsuleheight / 2) + (raycastlength / 2)),
+				physicsobject.mesh.position.z + (capsuleradius * Math.sin((Math.PI * 2 * i) / 8))
+			);
+			
+			if (floordistance[i] < raycastlength){
+				raycastvisual[i].material = green;
+			}else{
+				raycastvisual[i].material = red;
+			}
+		}
 	}
 	
 	public function updatecamera(camera:Camera3D){
@@ -175,29 +217,36 @@ class PlayerFPSController{
 		var lookat:Vector3D = new Vector3D(pos.x + direction.x, pos.y + direction.y + (capsuleheight / 3), pos.z + direction.z);
 		camera.lookAt(lookat);
 		camera.rotate(Vector3D.X_AXIS, headtilt);
+		
+		camera.moveBackward(20);
+		camera.moveUp(2);
 	}
 	
 	function checkraycast(){
-		raycast.clear();
-		raycastbegin.copyFrom(physicsobject.rigidbody.getPosition());
-		raycastbegin.y -= (capsuleheight / 2);
-		
-		raycastend.copyFrom(raycastbegin);
-		raycastend.y -= 3;
-		
-		level.oimoworld.rayCast(raycastbegin, raycastend, raycast);
-		
-		if (raycast.hit){
-			floordistance = raycastbegin.sub(raycast.position).y;
-		}else{
-			floordistance = 100000;
-		}
-		
-		if (onground()){
-			coyoteframes = maxcoyoteframes;
-		}else{
-			coyoteframes--;
-			if (coyoteframes < 0) coyoteframes = 0;
+		for(i in 0 ... 8){
+			raycast.clear();
+			raycastbegin.copyFrom(physicsobject.rigidbody.getPosition());
+			raycastbegin.x += capsuleradius * Math.cos((Math.PI * 2 * i) / 8);
+			raycastbegin.y -= (capsuleheight / 2);
+			raycastbegin.z += capsuleradius * Math.sin((Math.PI * 2 * i) / 8);
+			
+			raycastend.copyFrom(raycastbegin);
+			raycastend.y -= raycastlength;
+			
+			level.oimoworld.rayCast(raycastbegin, raycastend, raycast);
+			
+			if (raycast.hit){
+				floordistance[i] = raycastbegin.sub(raycast.position).y;
+			}else{
+				floordistance[i] = 100000;
+			}
+			
+			if (onground()){
+				coyoteframes = maxcoyoteframes;
+			}else{
+				coyoteframes--;
+				if (coyoteframes < 0) coyoteframes = 0;
+			}
 		}
 	}
 	
@@ -214,7 +263,7 @@ class PlayerFPSController{
 			}
 		}
 		
-		if(pressedjump){
+		if (pressedjump){
 			if(onground() || coyoteframes > 0){
 				applyjump = true;
 				jumpbuffer = 0;
@@ -222,8 +271,15 @@ class PlayerFPSController{
 		}
 	}
 	
+	var numtouches:Int;
 	public function onground():Bool{
-		if (floordistance <= 3) return true;
+		numtouches = 0;
+		for (i in 0 ... 8){
+			if (floordistance[i] < raycastlength){
+				numtouches++;
+			}
+		}
+		if (numtouches >= 4) return true;
 		return false;
 	}
 	
