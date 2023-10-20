@@ -92,7 +92,7 @@ class Level {
 		for (v in newmesh.geometry.subGeometries){
 			var vertex:openfl.Vector<Float> = v.vertexData;
 			for (i in 0 ... v.numVertices){
-				convexgeometry.push(new Vec3(vertex[(13 * i)], vertex[(13 * i) + 1], vertex[(13 * i) + 2])); 
+				convexgeometry.push(new Vec3(vertex[(13 * i)] * sx, vertex[(13 * i) + 1] * sy, vertex[(13 * i) + 2] * sz)); 
 			}
 		}
 		
