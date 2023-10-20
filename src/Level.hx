@@ -64,11 +64,11 @@ class Level {
 		return new PhysicsObject(newcube, rb);
 	}
 
-	public function addmodelgroup(meshname:String, count:Int, pos:Vector3D, angle:Float, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0):Mesh {
-		addmodel(meshname, pos, angle, sx, sy, sz);
+	public function addmodelgroup(meshname:String, count:Int, pos:Vector3D, angle:Float = 0.0, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0):Mesh {
 		for (i in 1 ... (count + 1)){
 			addmodel(meshname + "_" + i, pos, angle, sx, sy, sz);
 		}
+		return addmodel(meshname, pos, angle, sx, sy, sz);
 	}
 	
 	public function addmodel(meshname:String, pos:Vector3D, angle:Float = 0.0, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0):Mesh {
