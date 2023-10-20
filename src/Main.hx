@@ -32,7 +32,7 @@ class Main extends Sprite {
 		Input.init(stage);
 		Mouse.init(stage);
 
-		oimoworld = new World(new Vec3(0, -0.4, 0));
+		oimoworld = new World(new Vec3(0, -0.35, 0));
 		OimoUtils.setWorld(oimoworld);
 
 		initProxies();

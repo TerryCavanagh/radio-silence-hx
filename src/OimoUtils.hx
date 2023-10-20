@@ -2,6 +2,7 @@ package;
 
 import away3d.core.math.Quaternion;
 import away3d.entities.Mesh;
+import away3d.primitives.PlaneGeometry as AwayPlaneGeom;
 import away3d.primitives.CubeGeometry as AwayCubeGeom;
 import away3d.primitives.SphereGeometry as AwaySphereGeom;
 import away3d.primitives.PlaneGeometry as AwayPlaneGeom;
@@ -71,7 +72,13 @@ class OimoUtils {
 		var rBody:RigidBody = null;
 
 		if (colliderType == "") {
-			if (Std.isOfType(mesh.geometry, AwayCubeGeom)) {
+			if (Std.isOfType(mesh.geometry, AwayPlaneGeom)) {
+				var geom:AwayPlaneGeom = cast mesh.geometry;
+				tmpVec3_0.x = geom.width / 2;
+				tmpVec3_0.y = 0.01 / 2;
+				tmpVec3_0.z = geom.height / 2;
+				rBody = OimoUtils.addPlane(OimoUtils.oimoWorld, tmpVec3_1, tmpVec3_0, type);
+			} else if (Std.isOfType(mesh.geometry, AwayCubeGeom)) {
 				var geom:AwayCubeGeom = cast mesh.geometry;
 				tmpVec3_0.x = geom.width / 2;
 				tmpVec3_0.y = geom.height / 2;
@@ -210,6 +217,10 @@ class OimoUtils {
 
 	public static function addSphere(w:World, center:Vec3, radius:Float, type:Int):RigidBody {
 		return addRigidBody(w, center, new SphereGeometry(radius), type);
+	}
+	
+	public static function addPlane(w:World, center:Vec3, halfExtents:Vec3, type:Int):RigidBody {
+		return addRigidBody(w, center, new BoxGeometry(halfExtents), type);
 	}
 
 	public static function addBox(w:World, center:Vec3, halfExtents:Vec3, type:Int):RigidBody {

@@ -64,6 +64,25 @@ class Level {
 		return new PhysicsObject(newcube, rb);
 	}
 
+	public function addplane(height:Float, size:Float, color:Int, collidable:Bool = true):PhysicsObject{
+		var planematerial:ColorMaterial = new ColorMaterial(color);
+		planematerial.lightPicker = lightpicker;
+		planematerial.addMethod(fogmethod);
+		
+		var newplane:Mesh = new Mesh(new away3d.primitives.PlaneGeometry(size, size, 1, 1), planematerial);
+		newplane.position = new Vector3D(0, height, 0);
+		meshlist.push(newplane);
+		view.scene.addChild(newplane);
+		
+		if(collidable){
+			var rb:RigidBody = OimoUtils.addPhysics(newplane, RigidBodyType.STATIC, [0, height, 0]);
+			rb.getShapeList().setFriction(1);
+			return new PhysicsObject(newplane, rb);
+		}else{
+			return new PhysicsObject(newplane, null);
+		}
+	}
+	
 	public function addmodelgroup(meshname:String, count:Int, pos:Vector3D, angle:Float = 0.0, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0):Mesh {
 		for (i in 1 ... (count + 1)){
 			addmodel(meshname + "_" + i, pos, angle, sx, sy, sz);

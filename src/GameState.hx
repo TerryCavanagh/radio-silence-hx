@@ -38,7 +38,16 @@ class GameState{
 		
 		radiosilence = new Level(view, oimoworld, 0xFFFFFF, lightPicker);
 		
-		radiosilence.addcube(new Vector3D(0, 0, 0), new Vector3D(500, 1, 500), 0x000000);
+		radiosilence.addplane(0, 1000, 0x000000, false);
+		radiosilence.addplane(-2, 1000, 0x000000, true);
+		//radiosilence.addcube(new Vector3D(0, 0, 0), new Vector3D(500, 1, 500), 0x000000);
+		/*for(i in 0 ... 1000){
+			radiosilence.addcube(new Vector3D(-250 + (i / 2), 0, 0), new Vector3D(0.05, 0.05, 500), 0xFFFF00);
+		}
+		
+		for(i in 0 ... 1000){
+			radiosilence.addcube(new Vector3D(0, 0, -250 + (i / 2)), new Vector3D(500, 0.05, 0.05), 0xFFFF00);
+		}*/
 		
 		//Manually split the big islands into convex hulls in blender
 		radiosilence.addmodelgroup("island1", 13, new Vector3D(0, 0, 0));
@@ -51,6 +60,7 @@ class GameState{
 		radiosilence.addmodel("big1", new Vector3D( -46.08296, 0, -97.01513), 20, 1.0, 0.75, 1.0);
 		radiosilence.addmodel("big1", new Vector3D( 53.12647, 0, -6.426665), 75, 1.0, 0.5, 1.0);
 		radiosilence.addmodel("big1", new Vector3D( -16.84418, 0, 92.27372), 75, 1.0, 0.5, 1.0);
+		
 		radiosilence.addmodel("big2", new Vector3D( 63.41546, 0, -13.25198));
 		radiosilence.addmodel("big2", new Vector3D( -32.4323, 0, 91.78304));
 		

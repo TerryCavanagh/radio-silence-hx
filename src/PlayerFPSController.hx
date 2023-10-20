@@ -28,7 +28,7 @@ class PlayerFPSController{
 	final maxcoyoteframes:Int = 6;
 	final maxjumpbuffer:Int = 3;
 	
-	final jumpstrength:Float = 2.4;
+	final jumpstrength:Float = 2.5;
 	var applyjump:Bool = false;
 	var coyoteframes:Int = 0;
 	var jumpbuffer:Int = 0;
