@@ -207,6 +207,10 @@ class PlayerFPSController{
 		}
 	}
 	
+	public function ypos():Float{
+		return physicsobject.rigidbody.getPosition().y;
+	}
+	
 	public function updatecamera(camera:Camera3D){
 		//Set the camera position to the top of the RigidBody
 		var pos:Vec3 = physicsobject.rigidbody.getPosition();
@@ -218,8 +222,8 @@ class PlayerFPSController{
 		camera.lookAt(lookat);
 		camera.rotate(Vector3D.X_AXIS, headtilt);
 		
-		camera.moveBackward(20);
-		camera.moveUp(2);
+		//camera.moveBackward(20);
+		//camera.moveUp(2);
 	}
 	
 	function checkraycast(){

@@ -40,16 +40,7 @@ class GameState{
 		
 		radiosilence.addplane(0, 1000, 0x000000, false);
 		radiosilence.addplane(-2, 1000, 0x000000, true);
-		//radiosilence.addcube(new Vector3D(0, 0, 0), new Vector3D(500, 1, 500), 0x000000);
-		/*for(i in 0 ... 1000){
-			radiosilence.addcube(new Vector3D(-250 + (i / 2), 0, 0), new Vector3D(0.05, 0.05, 500), 0xFFFF00);
-		}
 		
-		for(i in 0 ... 1000){
-			radiosilence.addcube(new Vector3D(0, 0, -250 + (i / 2)), new Vector3D(500, 0.05, 0.05), 0xFFFF00);
-		}*/
-		
-		//Manually split the big islands into convex hulls in blender
 		radiosilence.addmodelgroup("island1", 13, new Vector3D(0, 0, 0));
 		radiosilence.addmodelgroup("island2", 16, new Vector3D(100, 0, 10), 40);
 		radiosilence.addmodelgroup("island3", 10, new Vector3D(20, 0, -85));
@@ -118,6 +109,15 @@ class GameState{
 	}
 	
 	public function update(){
+		if (player.ypos() < 1){
+			var fog:Float = radiosilence.getfog() - 7.5;
+			if (fog < 15) fog = 15;
+			radiosilence.changefog(fog);
+		}else{
+			var fog:Float = radiosilence.getfog() + 7.5;
+			if (fog > 150) fog = 150;
+			radiosilence.changefog(fog);
+		}
 		
 		if (Input.key_justpressed(Keyboard.NUMBER_1)){
 			light.rotationX = ((light.rotationX - 5) + 360) % 360;

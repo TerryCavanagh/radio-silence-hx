@@ -46,6 +46,14 @@ class Level {
 		center = new Vec3(0, 0, 0);
 	}
 	
+	public function changefog(fogdistance:Float){
+		fogmethod.maxDistance = fogdistance;
+	}
+	
+	public function getfog():Float{
+		return fogmethod.maxDistance;
+	}
+	
 	/* Basically just for physics testing */
 	public function addcube(pos:Vector3D, size:Vector3D, color:Int, anchored:Bool = true):PhysicsObject{
 		var cubematerial:ColorMaterial = new ColorMaterial(color);
