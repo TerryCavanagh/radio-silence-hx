@@ -1,3 +1,5 @@
+//Can just be deleted
+//
 //Mirrors the Terry Collection style, these are hardcoded in AudioManager.hx
 enum SoundAssets{
   splash;
@@ -11,4 +13,5 @@ enum SoundAssets{
 	radio8;
 	water;
 	radiooff;
+	footsteps;
 }

@@ -32,6 +32,7 @@ class PlayerFPSController{
 	var applyjump:Bool = false;
 	var coyoteframes:Int = 0;
 	var jumpbuffer:Int = 0;
+	var ismoving:Bool = false;
 	
 	public var mouselock:Bool;
 	
@@ -59,6 +60,11 @@ class PlayerFPSController{
 	
 	public var position:Vector3D;
 	
+	var footsteps:AudioID = null;
+	var footstepsplaying:Bool = false;
+	var footstepdelay:Int = 0;
+	final footstepspeed:Int = 156; //2.6 seconds * 60 frames
+	
   public function new(pos:Vector3D, _camera:Camera3D, _level:Level){
 		playercamera = _camera;
 		level = _level;
@@ -74,6 +80,7 @@ class PlayerFPSController{
 		
 		headtilt = 0;
 		mousesensitivity = 0.3;
+		ismoving = false;
 		
 		mouselock = false;
 		applyjump = false;
@@ -162,24 +169,54 @@ class PlayerFPSController{
 		
 		var vy:Float = physicsobject.rigidbody.getLinearVelocity().y;
 		impulse.x = 0; impulse.y = vy; impulse.z = 0;
+		ismoving = false;
 		if (Input.action_pressed(InputActions.MOVE_UP)){
+			ismoving = true;
 			impulse.x += direction.x;
 			impulse.z += direction.z;
 		}
 		
 		if (Input.action_pressed(InputActions.MOVE_DOWN)){
+			ismoving = true;
 			impulse.x += -direction.x;
 			impulse.z += -direction.z;
 		}
 		
 		if (Input.action_pressed(InputActions.MOVE_LEFT)){
+			ismoving = true;
 			impulse.x += -perpendicular.x;
 			impulse.z += -perpendicular.z;
 		}
 		
 		if (Input.action_pressed(InputActions.MOVE_RIGHT)){
+			ismoving = true;
 			impulse.x += perpendicular.x;
 			impulse.z += perpendicular.z;
+		}
+		
+		if (ismoving && !onground()) ismoving = false;
+		if (ismoving && position.y <= 1) ismoving = false;
+		
+		if (ismoving){
+			if (!footstepsplaying){
+				footsteps = AudioManager.play(SoundAssets.footsteps);
+				footstepsplaying = true;
+				footstepdelay = footstepspeed;
+			}
+		}else{
+			if (footstepsplaying){
+				footsteps.stop();
+				footstepsplaying = false;
+			}
+		}
+		
+		if (footstepsplaying){
+			footstepdelay--;
+			if (footstepdelay <= 0){
+				footstepdelay = footstepspeed;
+				footsteps.stop();
+				footsteps = AudioManager.play(SoundAssets.footsteps);
+			}
 		}
 		
 		vy = impulse.y;
