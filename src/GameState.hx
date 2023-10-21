@@ -24,6 +24,7 @@ class GameState{
 	var radiosilence:Level;
 	var oimoworld:World;
 	
+	var radio:Array<Radio>;
 	var player:PlayerFPSController;
 	var inwater:Bool;
 	
@@ -81,16 +82,17 @@ class GameState{
 		radiosilence.addmodel("small3", new Vector3D( 61.35777, 0, 67.3923), 320);
 		radiosilence.addmodel("small3", new Vector3D( -42.07666, 0, 114.5882), 20);
 		
-		radiosilence.addradio(new Vector3D( -133.4188, 5.0166802091133, 30.702270319893), 40, 180, 0);
-		radiosilence.addradio(new Vector3D(114.0653, 1.16994856030492, 36.0713368628997), 65, 180, 0);
-		radiosilence.addradio(new Vector3D(37.3694348674523, 4.139511, 92.3384911064313), 90, 185, 0);
-		radiosilence.addradio(new Vector3D(21.5730602225837, 2.3690367885654, -93.2907867652821), 20, 285, 0);
-		radiosilence.addradio(new Vector3D(71.07146, 1.246474, 29.6465), 90, 180, 0);
-		radiosilence.addradio(new Vector3D(-32.3904016015446, 10.4923053976431, 89.3429549610537), 90, 215, 0);
-		radiosilence.addradio(new Vector3D(-119.4835, 3.650509, -119.8437), 90, 50, 0);
-		radiosilence.addradio(new Vector3D(10.9876076407625, 3.91578086042665, -5.24179292182197), 20, 320, 0);
+		player = new PlayerFPSController(new Vector3D( -1.061736, 5, 0), view.camera, radiosilence);
 		
-		player = new PlayerFPSController(new Vector3D( -1.061736, 5, 0), radiosilence);
+		radio = [];
+		radio.push(new Radio(player, SoundAssets.radio4, radiosilence.addradio(new Vector3D( -133.4188, 5.0166802091133, 30.702270319893), 40, 180, 0)));
+		radio.push(new Radio(player, SoundAssets.radio3, radiosilence.addradio(new Vector3D(114.0653, 1.16994856030492, 36.0713368628997), 65, 180, 0)));
+		radio.push(new Radio(player, SoundAssets.radio2, radiosilence.addradio(new Vector3D(37.3694348674523, 4.139511, 92.3384911064313), 90, 185, 0)));
+		radio.push(new Radio(player, SoundAssets.radio1, radiosilence.addradio(new Vector3D(21.5730602225837, 2.3690367885654, -93.2907867652821), 20, 285, 0)));
+		radio.push(new Radio(player, SoundAssets.radio5, radiosilence.addradio(new Vector3D(71.07146, 1.246474, 29.6465), 90, 180, 0)));
+		radio.push(new Radio(player, SoundAssets.radio6, radiosilence.addradio(new Vector3D(-32.3904016015446, 10.4923053976431, 89.3429549610537), 90, 215, 0)));
+		radio.push(new Radio(player, SoundAssets.water, radiosilence.addradio(new Vector3D(-119.4835, 3.650509, -119.8437), 90, 50, 0)));
+		radio.push(new Radio(player, SoundAssets.radio8, radiosilence.addradio(new Vector3D(10.9876076407625, 3.91578086042665, -5.24179292182197), 20, 320, 0)));
 		
 		inwater = false;
 	}
@@ -208,6 +210,11 @@ class GameState{
 		player.checkjump();
 		player.update();
 		player.updatecamera(view.camera);
+		
+		//Update radios
+		for (r in radio){
+			r.update();
+		}
 		
 		if (Mouse.leftclick() || Mouse.rightclick() || Mouse.middleclick()){
 			if (player.mouselock){

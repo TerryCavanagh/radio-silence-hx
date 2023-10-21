@@ -46,6 +46,7 @@ class PlayerFPSController{
 	
 	var level:Level;
 	var physicsobject:PhysicsObject;
+	public var playercamera:Camera3D;
 	
 	var raycastvisual:Array<Mesh> = [];
 	var raycast:RayCastClosest;
@@ -56,9 +57,13 @@ class PlayerFPSController{
 	var red:ColorMaterial;
 	var green:ColorMaterial;
 	
-  public function new(pos:Vector3D, _level:Level){
+	public var position:Vector3D;
+	
+  public function new(pos:Vector3D, _camera:Camera3D, _level:Level){
+		playercamera = _camera;
 		level = _level;
 		
+		position = new Vector3D(pos.x, pos.y, pos.z);
 		forward = new Vec3(0, 0, -1);
 		direction = new Vec3(0, 0, -1);
 		zero = new Vec3(0, 0, 0);
@@ -212,8 +217,11 @@ class PlayerFPSController{
 	}
 	
 	public function updatecamera(camera:Camera3D){
+		playercamera = camera;
 		//Set the camera position to the top of the RigidBody
 		var pos:Vec3 = physicsobject.rigidbody.getPosition();
+		position.setTo(pos.x, pos.y, pos.z);
+		
 		camera.x = pos.x;
 		camera.y = pos.y + (capsuleheight / 2);
 		camera.z = pos.z;

@@ -136,7 +136,7 @@ class Level {
 		return newmesh;
 	}
 	
-	public function addradio(pos:Vector3D, rx:Float, ry:Float, rz:Float):Mesh {
+	public function addradio(pos:Vector3D, rx:Float, ry:Float, rz:Float):Array<Mesh> {
 		var radio:Mesh = MeshLibrary.getmesh("radio").clone();
 		radio.material = levelmaterial;
 		
@@ -160,7 +160,7 @@ class Level {
 		view.scene.addChild(radio);
 		view.scene.addChild(radioscreen);
 		
-		return radio;
+		return [radio, radioscreen];
 	}
 
 	public function cleanup() {}

@@ -1,3 +1,13 @@
 {
-  "splash": { "volume": 1.0, "type": "sound" }
+  "splash": { "volume": 1.0, "type": "sound" },
+  "radio1": { "volume": 1.0, "type": "sound" },
+  "radio2": { "volume": 1.0, "type": "sound" },
+  "radio3": { "volume": 1.0, "type": "sound" },
+  "radio4": { "volume": 1.0, "type": "sound" },
+  "radio5": { "volume": 1.0, "type": "sound" },
+  "radio6": { "volume": 1.0, "type": "sound" },
+  "radio7": { "volume": 1.0, "type": "sound" },
+  "radio8": { "volume": 1.0, "type": "sound" },
+  "water": { "volume": 1.0, "type": "sound" },
+  "radiooff": { "volume": 1.0, "type": "sound" }
 }
