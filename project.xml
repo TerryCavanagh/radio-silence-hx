@@ -25,6 +25,9 @@
 	<assets path="data" include="*.awd" type="binary" />
 	<assets path="data" />
 
+  <assets path="audio/mp3" rename="audio" if="html5" />
+  <assets path="audio/ogg" rename="audio" unless="html5" />
+
 	<section if="haxeserver">
 		<haxeflag name="--connect 6000" />
 	</section>

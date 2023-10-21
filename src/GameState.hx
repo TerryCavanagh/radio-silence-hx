@@ -25,6 +25,7 @@ class GameState{
 	var oimoworld:World;
 	
 	var player:PlayerFPSController;
+	var inwater:Bool;
 	
 	var stage:Stage;
 	
@@ -89,10 +90,10 @@ class GameState{
 		radiosilence.addradio(new Vector3D(-119.4835, 3.650509, -119.8437), 90, 50, 0);
 		radiosilence.addradio(new Vector3D(10.9876076407625, 3.91578086042665, -5.24179292182197), 20, 320, 0);
 		
-		player = new PlayerFPSController(new Vector3D(-1.061736, 5, 0), radiosilence);
+		player = new PlayerFPSController(new Vector3D( -1.061736, 5, 0), radiosilence);
+		
+		inwater = false;
 	}
-	
-	var radio:Mesh;
 	
 	function initlight(){
 		light = new DirectionalLight();
@@ -110,8 +111,16 @@ class GameState{
 	
 	public function update(){
 		if (player.ypos() < 1){
+			if (!inwater)	AudioManager.play(SoundAssets.splash);
+			inwater = true;
+		}else{
+			if (inwater)	AudioManager.play(SoundAssets.splash);
+			inwater = false;
+		}
+		
+		if (inwater){
 			var fog:Float = radiosilence.getfog() - 7.5;
-			if (fog < 15) fog = 15;
+			if (fog < 4) fog = 4;
 			radiosilence.changefog(fog);
 		}else{
 			var fog:Float = radiosilence.getfog() + 7.5;
