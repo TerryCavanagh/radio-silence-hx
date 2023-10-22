@@ -97,6 +97,8 @@ class Main extends Sprite {
 		away3dview.width = stage.stageWidth;
 		away3dview.height = stage.stageHeight;
 		
-		//TODO: Resize the Starling Layer too
+		//???? TODO can't get the starling layer to resize, problem with sharedproxy?
+		starlinglayer.viewPort.width = stage3DProxy.width;
+		starlinglayer.viewPort.height = stage3DProxy.height;
 	}
 }
