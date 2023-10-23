@@ -249,6 +249,15 @@ class PlayerFPSController{
 		}
 	}
 	
+	public function stop(){
+		physicsobject.rigidbody.setLinearVelocity(zero);
+		
+		if (footstepsplaying){
+			footsteps.stop();
+			footstepsplaying = false;
+		}
+	}
+	
 	public function ypos():Float{
 		return physicsobject.rigidbody.getPosition().y;
 	}

@@ -6,12 +6,12 @@ import openfl.events.Event;
 import openfl.Assets;
 
 class Radio{
+	public var isOn:Bool;
 	var pos:Vector3D;
 	var model:Array<Mesh>;
 	var radioscreen:Mesh;
 	var radiosound:SoundAssets;
 	var player:PlayerFPSController;
-	var active:Bool;
 	
 	var sound3d:Sound3D;
 	var soundvol:Float;
@@ -25,7 +25,7 @@ class Radio{
 		radiosound = sound;
 		player = _player;
 		pos = radiomesh[0].position.clone();
-		active = true;
+		isOn = true;
 		
 		fadein = maxfadein;
 		soundvol = 1;
@@ -70,7 +70,7 @@ class Radio{
 	}
 	
 	public function update(){
-		if (active){
+		if (isOn){
 			var dist:Float = player.position.subtract(pos).lengthSquared;
 			
 			if (dist < 10){
@@ -79,7 +79,7 @@ class Radio{
 				model[0].visible = false;
 				model[1].visible = false;
 				
-				active = false;
+				isOn = false;
 			}else{
 				if (fadein > 0){
 					if (fadein == 1){
