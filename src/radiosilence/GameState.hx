@@ -41,8 +41,8 @@ class GameState{
 		radiosilence.addmodelgroup("island1", 13, new Vector3D(0, 0, 0));
 		radiosilence.addmodelgroup("island2", 16, new Vector3D(100, 0, 10), 40);
 		radiosilence.addmodelgroup("island3", 10, new Vector3D(20, 0, -85));
-		radiosilence.addmodelgroup("island4", 8, new Vector3D(60, 0, 80), 45);
-		radiosilence.addmodelgroup("island5", 13, new Vector3D( -130, 0, 10));
+		radiosilence.addmodelgroup("island4", 12, new Vector3D(60, 0, 80), 45);
+		radiosilence.addmodelgroup("island5", 18, new Vector3D( -130, 0, 10));
 		
 		radiosilence.addmodel("big1", new Vector3D( -4.854439, 0, -56.49567), 75);
 		radiosilence.addmodel("big1", new Vector3D( -46.08296, 0, -97.01513), 20, 1.0, 0.75, 1.0);
