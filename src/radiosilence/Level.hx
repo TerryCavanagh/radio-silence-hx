@@ -21,6 +21,7 @@ import openfl.geom.Vector3D;
 import oimo.common.Vec3;
 import oimo.dynamics.World;
 
+@:access(OimoUtils)
 class Level {
 	var view:View3D;
 	var meshlist:Array<Mesh>;
@@ -67,8 +68,11 @@ class Level {
 		newplane.position = new Vector3D(0, height, 0);
 		
 		if(collidable){
-			var rb:RigidBody = OimoUtils.addPhysics(newplane, RigidBodyType.STATIC, [0, height, 0]);
+			var rb:RigidBody = OimoUtils.addRigidBody(oimoworld, new Vec3(0, height, 0), new oimo.collision.geometry.BoxGeometry(new Vec3(size / 2, 0.005, size / 2)), RigidBodyType.STATIC);
 			rb.getShapeList().setFriction(1);
+			
+			OimoUtils.oimoStaticBodies.push(rb);
+			OimoUtils.awayStaticBodies.push(newplane);
 		}
 		
 		meshlist.push(newplane);
