@@ -26,7 +26,10 @@ class Level {
 	var meshlist:Array<Mesh>;
 	var ambientlight:Int;
 	var lightpicker:StaticLightPicker;
+	
 	var levelmaterial:ColorMaterial;
+	var blackmaterial:ColorMaterial;
+	
 	var fogmethod:FogMethod;
 	var oimoworld:World;
 	var center:Vec3;
@@ -44,6 +47,9 @@ class Level {
 		levelmaterial.ambient = 1.0;
 		levelmaterial.lightPicker = lightpicker;
 		levelmaterial.addMethod(fogmethod);
+		blackmaterial = new ColorMaterial(0x000000);
+		blackmaterial.lightPicker = lightpicker;
+		blackmaterial.addMethod(fogmethod);
 		
 		center = new Vec3(0, 0, 0);
 	}
@@ -56,51 +62,27 @@ class Level {
 		return fogmethod.maxDistance;
 	}
 	
-	/* Basically just for physics testing */
-	public function addcube(pos:Vector3D, size:Vector3D, color:Int, anchored:Bool = true):PhysicsObject{
-		var cubematerial:ColorMaterial = new ColorMaterial(color);
-		cubematerial.lightPicker = lightpicker;
-		cubematerial.addMethod(fogmethod);
-		
-		var newcube:Mesh = new Mesh(new CubeGeometry(size.x, size.y, size.z), cubematerial);
-		newcube.position = pos;
-		
-		var rb:RigidBody = OimoUtils.addPhysics(newcube, anchored?RigidBodyType.STATIC:RigidBodyType.DYNAMIC, [pos.x, pos.y, pos.z]);
-		rb.getShapeList().setFriction(1);
-		
-		meshlist.push(newcube);
-		view.scene.addChild(newcube);
-		
-		return new PhysicsObject(newcube, rb);
-	}
-
-	public function addplane(height:Float, size:Float, color:Int, collidable:Bool = true):PhysicsObject{
-		var planematerial:ColorMaterial = new ColorMaterial(color);
-		planematerial.lightPicker = lightpicker;
-		planematerial.addMethod(fogmethod);
-		
-		var newplane:Mesh = new Mesh(new away3d.primitives.PlaneGeometry(size, size, 1, 1), planematerial);
+	public function addplane(height:Float, size:Float, collidable:Bool = true){
+		var newplane:Mesh = new Mesh(new away3d.primitives.PlaneGeometry(size, size, 1, 1), blackmaterial);
 		newplane.position = new Vector3D(0, height, 0);
-		meshlist.push(newplane);
-		view.scene.addChild(newplane);
 		
 		if(collidable){
 			var rb:RigidBody = OimoUtils.addPhysics(newplane, RigidBodyType.STATIC, [0, height, 0]);
 			rb.getShapeList().setFriction(1);
-			return new PhysicsObject(newplane, rb);
-		}else{
-			return new PhysicsObject(newplane, null);
 		}
+		
+		meshlist.push(newplane);
+		view.scene.addChild(newplane);
 	}
 	
-	public function addmodelgroup(meshname:String, count:Int, pos:Vector3D, angle:Float = 0.0, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0):Mesh {
+	public function addmodelgroup(meshname:String, count:Int, pos:Vector3D, angle:Float = 0.0, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0) {
 		for (i in 1 ... (count + 1)){
 			addmodel(meshname + "_" + i, pos, angle, sx, sy, sz);
 		}
-		return addmodel(meshname, pos, angle, sx, sy, sz);
+		addmodel(meshname, pos, angle, sx, sy, sz);
 	}
 	
-	public function addmodel(meshname:String, pos:Vector3D, angle:Float = 0.0, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0):Mesh {
+	public function addmodel(meshname:String, pos:Vector3D, angle:Float = 0.0, sx:Float = 1.0, sy:Float = 1.0, sz:Float = 1.0) {
 		var newmesh:Mesh = MeshLibrary.getmesh(meshname).clone();
 		newmesh.material = levelmaterial;
 		
@@ -134,8 +116,6 @@ class Level {
 		
 		meshlist.push(newmesh);
 		view.scene.addChild(newmesh);
-
-		return newmesh;
 	}
 	
 	public function addradio(pos:Vector3D, rx:Float, ry:Float, rz:Float):Array<Mesh> {
@@ -150,7 +130,7 @@ class Level {
 		meshlist.push(radio);
 		
 		var radioscreen:Mesh = MeshLibrary.getmesh("radioscreen").clone();
-		radioscreen.material = new ColorMaterial(0x000000);
+		radioscreen.material = blackmaterial;
 		
 		radioscreen.position = pos;
 		radioscreen.rotationX = rx;
@@ -165,5 +145,14 @@ class Level {
 		return [radio, radioscreen];
 	}
 
-	public function cleanup() {}
+	public function cleanup() {
+		for (i in 0 ... meshlist.length){
+			meshlist[i].dispose();
+			meshlist[i] = null;
+		}
+		
+		meshlist = [];
+		
+		oimoworld.removeRigidBody(oimoworld.getRigidBodyList());
+	}
 }

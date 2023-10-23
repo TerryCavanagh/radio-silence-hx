@@ -48,8 +48,9 @@ class PlayerFPSController{
 	var mousesensitivity:Float;
 	
 	var level:Level;
-	var physicsobject:PhysicsObject;
 	public var playercamera:Camera3D;
+	var player_mesh:Mesh;
+	var player_rigidbody:RigidBody;
 	
 	var raycast:RayCastClosest;
 	var raycastbegin:Vec3;
@@ -90,8 +91,8 @@ class PlayerFPSController{
 		rigidbodyconfig.type = RigidBodyType.DYNAMIC;
 		rigidbodyconfig.position = new Vec3(pos.x, pos.y, pos.z);
 		
-		var playerbody = new RigidBody(rigidbodyconfig);
-		playerbody.setOrientation(new Quat(0, 0, 0, 1));
+		player_rigidbody = new RigidBody(rigidbodyconfig);
+		player_rigidbody.setOrientation(new Quat(0, 0, 0, 1));
 		
 		var shapeconfig:ShapeConfig = new ShapeConfig();
 		shapeconfig.geometry = new oimo.collision.geometry.CapsuleGeometry(capsuleradius, capsuleheight / 2);
@@ -99,40 +100,38 @@ class PlayerFPSController{
 		shapeconfig.restitution = 0.0; //No bouncing!
 		
 		var playershape = new Shape(shapeconfig);
-		playerbody.addShape(playershape);
-		playerbody.setRotationFactor(new Vec3(0, 1, 0));
-		playerbody.setAngularDamping(10);
+		player_rigidbody.addShape(playershape);
+		player_rigidbody.setRotationFactor(new Vec3(0, 1, 0));
+		player_rigidbody.setAngularDamping(10);
 		
-		level.oimoworld.addRigidBody(playerbody);
+		level.oimoworld.addRigidBody(player_rigidbody);
 		
 		var capsulematerial:ColorMaterial = new ColorMaterial(0xFF0000);
 		capsulematerial.lightPicker = level.lightpicker;
 		
-		var newcapsule:Mesh = new Mesh(new away3d.primitives.CapsuleGeometry(capsuleradius, capsuleheight), capsulematerial);
-		newcapsule.position = pos;
+		player_mesh = new Mesh(new away3d.primitives.CapsuleGeometry(capsuleradius, capsuleheight), capsulematerial);
+		player_mesh.position = pos;
 		
-		level.meshlist.push(newcapsule);
-		level.view.scene.addChild(newcapsule);
+		level.meshlist.push(player_mesh);
+		level.view.scene.addChild(player_mesh);
 		
-		OimoUtils.oimoDynamicBodies.push(playerbody);
-		OimoUtils.awayDynamicBodies.push(newcapsule);
+		OimoUtils.oimoDynamicBodies.push(player_rigidbody);
+		OimoUtils.awayDynamicBodies.push(player_mesh);
 		
 		raycast = new RayCastClosest();
 		floordistance = [0, 0, 0, 0, 0, 0, 0, 0];
-		
-		physicsobject = new PhysicsObject(newcapsule, playerbody);
   }
 	
 	public function update(){
 		checkraycast();
-		physicsobject.rigidbody.setRotationFactor(zero);
+		player_rigidbody.setRotationFactor(zero);
 		
 		if (onground()){
 			//if (physicsobject.rigidbody.getShapeList().getFriction() == 0) trace("Friction ON");
-			physicsobject.rigidbody.getShapeList().setFriction(1.0);
+			player_rigidbody.getShapeList().setFriction(1.0);
 		}else{
 			//if (physicsobject.rigidbody.getShapeList().getFriction() == 1.0) trace("Friction OFF");
-			physicsobject.rigidbody.getShapeList().setFriction(0.0);
+			player_rigidbody.getShapeList().setFriction(0.0);
 		}
 		
 		if(mouselock){
@@ -142,15 +141,15 @@ class PlayerFPSController{
 		}
 		
 		if(Mouse.deltax != 0 && mouselock){
-			var newrotation:Mat3 = physicsobject.rigidbody.getRotation().appendRotation((Math.PI / 180) * (Mouse.deltax * mousesensitivity), 0, 1, 0);
-			physicsobject.rigidbody.setRotation(newrotation);
+			var newrotation:Mat3 = player_rigidbody.getRotation().appendRotation((Math.PI / 180) * (Mouse.deltax * mousesensitivity), 0, 1, 0);
+			player_rigidbody.setRotation(newrotation);
 		}
 		
-		direction = transformQuat(forward, physicsobject.rigidbody.getOrientation());
+		direction = transformQuat(forward, player_rigidbody.getOrientation());
 		perpendicular.x = direction.z;
 		perpendicular.z = -direction.x;
 		
-		var vy:Float = physicsobject.rigidbody.getLinearVelocity().y;
+		var vy:Float = player_rigidbody.getLinearVelocity().y;
 		impulse.x = 0; impulse.y = vy; impulse.z = 0;
 		ismoving = false;
 		if (Input.action_pressed(InputActions.MOVE_UP)){
@@ -214,11 +213,11 @@ class PlayerFPSController{
 			applyjump = false;
 		}
 		
-		physicsobject.rigidbody.setLinearVelocity(impulse);
+		player_rigidbody.setLinearVelocity(impulse);
 	}
 	
 	public function stop(){
-		physicsobject.rigidbody.setLinearVelocity(zero);
+		player_rigidbody.setLinearVelocity(zero);
 		
 		if (footstepsplaying){
 			footsteps.stop();
@@ -229,7 +228,7 @@ class PlayerFPSController{
 	public function updatecamera(camera:Camera3D){
 		playercamera = camera;
 		//Set the camera position to the top of the RigidBody
-		var pos:Vec3 = physicsobject.rigidbody.getPosition();
+		var pos:Vec3 = player_rigidbody.getPosition();
 		position.setTo(pos.x, pos.y, pos.z);
 		
 		camera.x = pos.x;
@@ -247,7 +246,7 @@ class PlayerFPSController{
 	function checkraycast(){
 		for(i in 0 ... 8){
 			raycast.clear();
-			raycastbegin.copyFrom(physicsobject.rigidbody.getPosition());
+			raycastbegin.copyFrom(player_rigidbody.getPosition());
 			raycastbegin.x += capsuleradius * Math.cos((Math.PI * 2 * i) / 8);
 			raycastbegin.y -= (capsuleheight / 2);
 			raycastbegin.z += capsuleradius * Math.sin((Math.PI * 2 * i) / 8);
@@ -262,13 +261,13 @@ class PlayerFPSController{
 			}else{
 				floordistance[i] = 100000;
 			}
-			
-			if (onground_canjump()){
-				coyoteframes = maxcoyoteframes;
-			}else{
-				coyoteframes--;
-				if (coyoteframes < 0) coyoteframes = 0;
-			}
+		}
+		
+		if (onground_canjump()){
+			coyoteframes = maxcoyoteframes;
+		}else{
+			coyoteframes--;
+			if (coyoteframes < 0) coyoteframes = 0;
 		}
 	}
 	
@@ -351,5 +350,7 @@ class PlayerFPSController{
 		return new Vec3(ax + uvx + uuvx, ay + uvy + uuvy, az + uvz + uuvz);
 	}
 	
-	public function cleanup() {}
+	public function cleanup() {
+		
+	}
 }

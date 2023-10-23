@@ -51,6 +51,18 @@ class MeshLibrary{
 		}
 	}
 	
+	public static function cleanup(){
+		for (k in meshlist.keys()){
+			meshlist.get(k).dispose();
+			meshlist.set(k, null);
+		}
+		
+		meshlist = new Map<String, Mesh>();
+		
+		Asset3DLibrary.removeEventListener(Asset3DEvent.ASSET_COMPLETE, onAssetComplete);
+		Asset3DLibrary.removeAllAssets(true);
+	}
+	
 	static function checkifcomplete(){
 		for (k in meshlist.keys()){
 			if (meshlist.get(k) == null) return;

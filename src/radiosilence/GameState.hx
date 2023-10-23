@@ -47,8 +47,8 @@ class GameState{
 		
 		radiosilence = new Level(view, oimoworld, 0xFFFFFF, lightPicker);
 		
-		radiosilence.addplane(0, 500, 0x000000, false);
-		radiosilence.addplane(-2, 500, 0x000000, true);
+		radiosilence.addplane(0, 500, false);
+		radiosilence.addplane(-2, 500, true);
 		
 		radiosilence.addmodelgroup("island1", 13, new Vector3D(0, 0, 0));
 		radiosilence.addmodelgroup("island2", 16, new Vector3D(100, 0, 10), 40);
@@ -190,12 +190,17 @@ class GameState{
 	}
 	
 	function exitgame(){
+		cleanup();
+		
 		#if !html5
 		Sys.exit(0);
 		#end
 	}
 	
 	public function cleanup(){
-		
+		player.cleanup();
+		radiosilence.cleanup();
+		for (r in radio) r.cleanup();
+		MeshLibrary.cleanup();
 	}
 }

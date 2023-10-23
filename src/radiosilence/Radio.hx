@@ -94,4 +94,16 @@ class Radio{
 			}
 		}
 	}
+	
+	public function cleanup(){
+		isOn = false;
+		
+		if (sound3d != null){
+			sound3d.stop();
+			sound3d.dispose();
+			sound3d = null;
+		}
+		
+		model = [];
+	}
 }
