@@ -1,24 +1,18 @@
 package radiosilence;
 
+import openfl.geom.Vector3D;
 import away3d.cameras.Camera3D;
-import away3d.primitives.CubeGeometry;
-import away3d.primitives.CapsuleGeometry;
-import away3d.primitives.CylinderGeometry;
-import oimo.collision.geometry.SphereGeometry;
-import oimo.common.Mat3;
-import oimo.common.Quat;
-import oimo.dynamics.callback.RayCastClosest;
-import oimo.dynamics.rigidbody.RigidBody;
-import oimo.dynamics.rigidbody.RigidBodyConfig;
-import oimo.dynamics.rigidbody.RigidBodyType;
-import away3d.containers.View3D;
 import away3d.entities.Mesh;
 import away3d.materials.ColorMaterial;
-import away3d.materials.lightpickers.StaticLightPicker;
+import oimo.dynamics.rigidbody.RigidBody;
+import oimo.dynamics.callback.RayCastClosest;
+import oimo.dynamics.rigidbody.RigidBodyConfig;
+import oimo.dynamics.rigidbody.RigidBodyType;
 import oimo.dynamics.rigidbody.Shape;
 import oimo.dynamics.rigidbody.ShapeConfig;
-import openfl.geom.Vector3D;
 import oimo.common.Vec3;
+import oimo.common.Mat3;
+import oimo.common.Quat;
 import oimo.dynamics.World;
 
 @:access(OimoUtils)

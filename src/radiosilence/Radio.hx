@@ -35,6 +35,7 @@ class Radio{
 		var soundobj:Sound = null;
 		var soundscale:Float = 100;
 		
+		//TODO: Swap out the Assets.getSound stuff here
 		switch(sound){
 			case SoundAssets.radio1: 
 				soundobj = Assets.getSound("audio/sounds/radio1." + #if html5 "mp3" #else "ogg" #end );

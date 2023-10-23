@@ -1,25 +1,16 @@
 package radiosilence;
 
-import away3d.materials.methods.*;
-import away3d.primitives.CubeGeometry;
-import away3d.primitives.CapsuleGeometry;
-import away3d.primitives.CylinderGeometry;
-import oimo.collision.geometry.ConvexHullGeometry;
-import oimo.collision.geometry.SphereGeometry;
-import oimo.common.Quat;
-import oimo.dynamics.rigidbody.RigidBody;
-import oimo.dynamics.rigidbody.RigidBodyConfig;
-import oimo.dynamics.rigidbody.RigidBodyType;
+import openfl.geom.Vector3D;
 import away3d.containers.View3D;
 import away3d.entities.Mesh;
 import away3d.materials.ColorMaterial;
 import away3d.materials.lightpickers.StaticLightPicker;
-import oimo.dynamics.rigidbody.Shape;
-import oimo.dynamics.rigidbody.ShapeConfig;
-import openfl.geom.ColorTransform;
-import openfl.geom.Vector3D;
+import away3d.materials.methods.FogMethod;
 import oimo.common.Vec3;
 import oimo.dynamics.World;
+import oimo.dynamics.rigidbody.RigidBody;
+import oimo.dynamics.rigidbody.RigidBodyType;
+import oimo.collision.geometry.ConvexHullGeometry;
 
 @:access(OimoUtils)
 class Level {

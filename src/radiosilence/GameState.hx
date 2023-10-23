@@ -1,23 +1,11 @@
 package radiosilence;
 
-import away3d.containers.*;
-import away3d.entities.*;
-import away3d.materials.*;
-import away3d.primitives.*;
-import away3d.utils.*;
-import away3d.lights.*;
-import away3d.loaders.parsers.AWDParser;
-import away3d.events.Asset3DEvent;
-import away3d.library.assets.IAsset;
-import away3d.library.assets.Asset3DType;
+import away3d.containers.View3D;
+import away3d.lights.DirectionalLight;
 import away3d.materials.lightpickers.StaticLightPicker;
-import openfl.Assets;
-import openfl.display.Scene;
+import oimo.dynamics.World;
 import openfl.display.Stage;
 import openfl.geom.Vector3D;
-import oimo.common.Vec3;
-import oimo.dynamics.World;
-import openfl.ui.Keyboard;
 
 class GameState{
 	var view:View3D;
