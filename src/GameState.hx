@@ -125,115 +125,16 @@ class GameState{
 				exitgame();
 			}
 		}else{
-			if (player.ypos() < 1){
-				if (!inwater)	AudioManager.play(SoundAssets.splash);
-				inwater = true;
-			}else{
-				if (inwater)	AudioManager.play(SoundAssets.splash);
-				inwater = false;
-			}
+			//Splash/Fog effect when you enter and exit water
+			updatesplash();
 			
-			if (inwater){
-				var fog:Float = radiosilence.getfog() - 7.5;
-				if (fog < 4) fog = 4;
-				radiosilence.changefog(fog);
-			}else{
-				var fog:Float = radiosilence.getfog() + 7.5;
-				if (fog > 150) fog = 150;
-				radiosilence.changefog(fog);
-			}
-			
-			if (Input.key_justpressed(Keyboard.NUMBER_1)){
-				light.rotationX = ((light.rotationX - 5) + 360) % 360;
-				trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
-			}
-			if (Input.key_justpressed(Keyboard.NUMBER_2)){
-				light.rotationX = ((light.rotationX + 5) + 360) % 360;
-				trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
-			}
-			if (Input.key_justpressed(Keyboard.NUMBER_3)){
-				light.rotationY = ((light.rotationY - 5) + 360) % 360;
-				trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
-			}
-			if (Input.key_justpressed(Keyboard.NUMBER_4)){
-				light.rotationY = ((light.rotationY + 5) + 360) % 360;
-				trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
-			}
-			if (Input.key_justpressed(Keyboard.NUMBER_5)){
-				light.rotationZ = ((light.rotationZ - 5) + 360) % 360;
-				trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
-			}
-			if (Input.key_justpressed(Keyboard.NUMBER_6)){
-				light.rotationZ = ((light.rotationZ + 5) + 360) % 360;
-				trace("light: rot(" + light.rotationX + ", " + light.rotationY + ", " + light.rotationZ + ")");
-			}
-			/*
-			if (Input.key_pressed(Keyboard.SHIFT)){
-				if (Input.key_justpressed(Keyboard.NUMBER_1)){
-					radio.moveLeft(0.025);
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-				if (Input.key_justpressed(Keyboard.NUMBER_2)){
-					radio.moveRight(0.025);
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-				if (Input.key_justpressed(Keyboard.NUMBER_3)){
-					radio.moveUp(0.025);
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-				if (Input.key_justpressed(Keyboard.NUMBER_4)){
-					radio.moveDown(0.025);
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-				if (Input.key_justpressed(Keyboard.NUMBER_5)){
-					radio.moveBackward(0.025);
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-				if (Input.key_justpressed(Keyboard.NUMBER_6)){
-					radio.moveForward(0.025);
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-			}else{
-				if (Input.key_justpressed(Keyboard.NUMBER_1)){
-					radio.rotationX = ((radio.rotationX - 5) + 360) % 360;
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-				if (Input.key_justpressed(Keyboard.NUMBER_2)){
-					radio.rotationX = ((radio.rotationX + 5) + 360) % 360;
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-				if (Input.key_justpressed(Keyboard.NUMBER_3)){
-					radio.rotationY = ((radio.rotationY - 5) + 360) % 360;
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-				if (Input.key_justpressed(Keyboard.NUMBER_4)){
-					radio.rotationY = ((radio.rotationY + 5) + 360) % 360;
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-				if (Input.key_justpressed(Keyboard.NUMBER_5)){
-					radio.rotationZ = ((radio.rotationZ - 5) + 360) % 360;
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-				if (Input.key_justpressed(Keyboard.NUMBER_6)){
-					radio.rotationZ = ((radio.rotationZ + 5) + 360) % 360;
-					trace("radio: pos(" + radio.position + "), rot(" + radio.rotationX + ", " + radio.rotationY + ", " + radio.rotationZ + ")");
-				}
-			}*/
 			//Player Movement
 			player.checkjump();
 			player.update();
 			player.updatecamera(view.camera);
 			
 			//Update radios
-			var number_radios_left:Int = 0;
-			for (r in radio){
-				r.update();
-				if (r.isOn) number_radios_left++;
-			}
-			
-			if (number_radios_left <= 0 || player.position.y < -20){
-				wingame();
-			}
+			updateradios();
 		}
 		
 		if (Mouse.leftclick() || Mouse.rightclick() || Mouse.middleclick()){
@@ -249,12 +150,44 @@ class GameState{
 		}
 	}
 	
-	public function wingame(){
+	function updateradios(){
+		var number_radios_left:Int = 0;
+		for (r in radio){
+			r.update();
+			if (r.isOn) number_radios_left++;
+		}
+		
+		if (number_radios_left <= 0 || player.position.y < -20){
+			wingame();
+		}
+	}
+	
+	function updatesplash(){
+		if (player.position.y < 1.0){
+			if (!inwater)	AudioManager.play(SoundAssets.splash);
+			inwater = true;
+		}else{
+			if (inwater)	AudioManager.play(SoundAssets.splash);
+			inwater = false;
+		}
+		
+		if (inwater){
+			var fog:Float = radiosilence.getfog() - 7.5;
+			if (fog < 4) fog = 4;
+			radiosilence.changefog(fog);
+		}else{
+			var fog:Float = radiosilence.getfog() + 7.5;
+			if (fog > 150) fog = 150;
+			radiosilence.changefog(fog);
+		}
+	}
+	
+	function wingame(){
 		levelcomplete = true;
 		radiosilence.changefog(0);
 	}
 	
-	public function exitgame(){
+	function exitgame(){
 		#if !html5
 		Sys.exit(0);
 		#end

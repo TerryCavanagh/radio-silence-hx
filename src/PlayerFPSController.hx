@@ -49,14 +49,11 @@ class PlayerFPSController{
 	var physicsobject:PhysicsObject;
 	public var playercamera:Camera3D;
 	
-	var raycastvisual:Array<Mesh> = [];
 	var raycast:RayCastClosest;
 	var raycastbegin:Vec3;
 	var raycastend:Vec3;
 	var floordistance:Array<Float>;
 	final raycastlength:Float = 0.5;
-	var red:ColorMaterial;
-	var green:ColorMaterial;
 	
 	public var position:Vector3D;
 	
@@ -87,9 +84,6 @@ class PlayerFPSController{
 		coyoteframes = 0;
 		jumpbuffer = 0;
 		
-		red = new ColorMaterial(0xFF0000);
-		green = new ColorMaterial(0x00FF00);
-		
 		var rigidbodyconfig:RigidBodyConfig = new RigidBodyConfig();
 		rigidbodyconfig.type = RigidBodyType.DYNAMIC;
 		rigidbodyconfig.position = new Vec3(pos.x, pos.y, pos.z);
@@ -117,19 +111,6 @@ class PlayerFPSController{
 		
 		level.meshlist.push(newcapsule);
 		level.view.scene.addChild(newcapsule);
-		
-		raycastvisual = [];
-		for (i in 0 ... 8){
-			var rc:Mesh = new Mesh(new away3d.primitives.CubeGeometry(0.05, raycastlength + (capsuleheight / 2), 0.05), new ColorMaterial(0xFFFF00));
-			rc.position = new Vector3D(
-				pos.x + (capsuleradius * Math.cos((Math.PI * 2 * i) / 8)),
-				pos.y,
-				pos.z + (capsuleradius * Math.sin((Math.PI * 2 * i) / 8)));
-			level.meshlist.push(rc);
-			level.view.scene.addChild(rc);
-			
-			raycastvisual.push(rc);
-		}
 		
 		OimoUtils.oimoDynamicBodies.push(playerbody);
 		OimoUtils.awayDynamicBodies.push(newcapsule);
@@ -232,21 +213,6 @@ class PlayerFPSController{
 		}
 		
 		physicsobject.rigidbody.setLinearVelocity(impulse);
-		
-		//Update raycast visuals
-		for (i in 0 ... 8){
-			raycastvisual[i].moveTo(
-				physicsobject.mesh.position.x  + (capsuleradius * Math.cos((Math.PI * 2 * i) / 8)),
-				physicsobject.mesh.position.y - ((capsuleheight / 2) + (raycastlength / 2)),
-				physicsobject.mesh.position.z + (capsuleradius * Math.sin((Math.PI * 2 * i) / 8))
-			);
-			
-			if (floordistance[i] < raycastlength){
-				raycastvisual[i].material = green;
-			}else{
-				raycastvisual[i].material = red;
-			}
-		}
 	}
 	
 	public function stop(){
@@ -256,10 +222,6 @@ class PlayerFPSController{
 			footsteps.stop();
 			footstepsplaying = false;
 		}
-	}
-	
-	public function ypos():Float{
-		return physicsobject.rigidbody.getPosition().y;
 	}
 	
 	public function updatecamera(camera:Camera3D){
