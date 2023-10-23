@@ -1,3 +1,5 @@
+package radiosilence;
+
 import away3d.entities.Mesh;
 import oimo.common.Vec3;
 import oimo.dynamics.rigidbody.RigidBody;

@@ -1,3 +1,5 @@
+//This is more or less a copy of the Haxegon Mouse class
+//Radio Silence (and At a Distance) need to be able to lock the mouse cursor for FPS controls, so that might need to be added to the shell
 import openfl.events.Event;
 import openfl.events.FocusEvent;
 import openfl.events.MouseEvent;

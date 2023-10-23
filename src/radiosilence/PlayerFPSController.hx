@@ -1,3 +1,5 @@
+package radiosilence;
+
 import away3d.cameras.Camera3D;
 import away3d.primitives.CubeGeometry;
 import away3d.primitives.CapsuleGeometry;
@@ -20,7 +22,7 @@ import oimo.common.Vec3;
 import oimo.dynamics.World;
 
 @:access(OimoUtils)
-@:access(Level)
+@:access(radiosilence.Level)
 class PlayerFPSController{
 	final linearSpeed:Float = 1;
 	final capsuleheight:Float = 2;
@@ -75,7 +77,7 @@ class PlayerFPSController{
 		raycastbegin = new Vec3(0, 0, 0);
 		raycastend = new Vec3(0, 0, 0);
 		
-		headtilt = 0;
+		headtilt = -26;
 		mousesensitivity = 0.3;
 		ismoving = false;
 		
@@ -135,8 +137,8 @@ class PlayerFPSController{
 		
 		if(mouselock){
 			headtilt += Mouse.deltay * mousesensitivity;
-			if (headtilt < -70) headtilt = -70;
-			if (headtilt > 70) headtilt = 70;
+			if (headtilt < -65) headtilt = -65;
+			if (headtilt > 65) headtilt = 65;
 		}
 		
 		if(Mouse.deltax != 0 && mouselock){

@@ -1,3 +1,5 @@
+package radiosilence;
+
 import away3d.containers.*;
 import away3d.entities.*;
 import away3d.primitives.*;

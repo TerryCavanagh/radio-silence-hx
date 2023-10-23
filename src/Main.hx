@@ -1,7 +1,6 @@
 import away3d.containers.*;
 import away3d.core.managers.Stage3DManager;
 import away3d.core.managers.Stage3DProxy;
-import away3d.debug.AwayStats;
 import away3d.events.Stage3DEvent;
 import oimo.common.Vec3;
 import oimo.dynamics.World;
@@ -9,6 +8,7 @@ import openfl.display.*;
 import openfl.events.*;
 import openfl.geom.Vector3D;
 import starling.core.*;
+import radiosilence.*;
 
 class Main extends Sprite {
 	// engine variables
@@ -62,7 +62,6 @@ class Main extends Sprite {
 		], onloadcomplete);
 
 		addChild(away3dview);
-		addChild(new AwayStats(away3dview));
 
 		initStarling();
 	}
