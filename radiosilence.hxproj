@@ -15,7 +15,7 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="C:\coding\haxelib\lime\8,1,0\src" />
+    <class path="C:\My Stuff\games\current\terry collection\openflfork\lime\src" />
     <class path="C:\coding\haxelib\starling\git\src" />
     <class path="C:\coding\haxelib\away3d\git" />
     <class path="C:\coding\haxelib\openfl\git\src" />
