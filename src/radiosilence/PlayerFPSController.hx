@@ -18,32 +18,34 @@ import oimo.dynamics.World;
 @:access(OimoUtils)
 @:access(radiosilence.Level)
 class PlayerFPSController{
+	public var position:Vector3D;
+	public var playercamera:Camera3D;
+	public var mouselock:Bool;
+	
 	final linearSpeed:Float = 1;
 	final capsuleheight:Float = 2;
 	final capsuleradius:Float = 0.4;
 	final maxcoyoteframes:Int = 6;
 	final maxjumpbuffer:Int = 3;
-	
 	final jumpstrength:Float = 2.5;
+	
 	var applyjump:Bool = false;
 	var coyoteframes:Int = 0;
 	var jumpbuffer:Int = 0;
 	var ismoving:Bool = false;
 	
-	public var mouselock:Bool;
-	
+	var lookat:Vector3D;
 	var direction:Vec3;
 	var forward:Vec3;
 	var zero:Vec3;
 	var perpendicular:Vec3;
 	var impulse:Vec3;
+	var tempvec3:Vec3; 
 	
 	var headtilt:Float;
 	var mousesensitivity:Float;
 	
 	var level:Level;
-	public var playercamera:Camera3D;
-	var player_mesh:Mesh;
 	var player_rigidbody:RigidBody;
 	
 	var raycast:RayCastClosest;
@@ -51,8 +53,6 @@ class PlayerFPSController{
 	var raycastend:Vec3;
 	var floordistance:Array<Float>;
 	final raycastlength:Float = 0.5;
-	
-	public var position:Vector3D;
 	
 	var footsteps:AudioID = null;
 	var footstepsplaying:Bool = false;
@@ -64,6 +64,7 @@ class PlayerFPSController{
 		level = _level;
 		
 		position = new Vector3D(pos.x, pos.y, pos.z);
+		lookat = new Vector3D(0, 0, 0);
 		forward = new Vec3(0, 0, -1);
 		direction = new Vec3(0, 0, -1);
 		zero = new Vec3(0, 0, 0);
@@ -71,6 +72,7 @@ class PlayerFPSController{
 		impulse = new Vec3(0, 0, 0);
 		raycastbegin = new Vec3(0, 0, 0);
 		raycastend = new Vec3(0, 0, 0);
+		tempvec3 = new Vec3(0, 0, 0);
 		
 		headtilt = -26;
 		mousesensitivity = 0.3;
@@ -97,20 +99,7 @@ class PlayerFPSController{
 		player_rigidbody.addShape(playershape);
 		player_rigidbody.setRotationFactor(new Vec3(0, 1, 0));
 		player_rigidbody.setAngularDamping(10);
-		
 		level.oimoworld.addRigidBody(player_rigidbody);
-		
-		var capsulematerial:ColorMaterial = new ColorMaterial(0xFF0000);
-		capsulematerial.lightPicker = level.lightpicker;
-		
-		player_mesh = new Mesh(new away3d.primitives.CapsuleGeometry(capsuleradius, capsuleheight), capsulematerial);
-		player_mesh.position = pos;
-		
-		level.meshlist.push(player_mesh);
-		level.view.scene.addChild(player_mesh);
-		
-		OimoUtils.oimoDynamicBodies.push(player_rigidbody);
-		OimoUtils.awayDynamicBodies.push(player_mesh);
 		
 		raycast = new RayCastClosest();
 		floordistance = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -222,19 +211,16 @@ class PlayerFPSController{
 	public function updatecamera(camera:Camera3D){
 		playercamera = camera;
 		//Set the camera position to the top of the RigidBody
-		var pos:Vec3 = player_rigidbody.getPosition();
-		position.setTo(pos.x, pos.y, pos.z);
+		tempvec3 = player_rigidbody.getPosition();
+		position.setTo(tempvec3.x, tempvec3.y, tempvec3.z);
 		
-		camera.x = pos.x;
-		camera.y = pos.y + (capsuleheight / 2);
-		camera.z = pos.z;
+		camera.x = tempvec3.x;
+		camera.y = tempvec3.y + (capsuleheight / 2);
+		camera.z = tempvec3.z;
 		
-		var lookat:Vector3D = new Vector3D(pos.x + direction.x, pos.y + direction.y + (capsuleheight / 3), pos.z + direction.z);
+		lookat.setTo(tempvec3.x + direction.x, tempvec3.y + direction.y + (capsuleheight / 3), tempvec3.z + direction.z);
 		camera.lookAt(lookat);
 		camera.rotate(Vector3D.X_AXIS, headtilt);
-		
-		//camera.moveBackward(20);
-		//camera.moveUp(2);
 	}
 	
 	function checkraycast(){
